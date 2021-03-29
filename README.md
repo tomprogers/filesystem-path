@@ -57,3 +57,52 @@ Thus, for the example path:
 - `basename`: 'README.md'
 - `filename`: 'README'
 - `ext`: 'md'
+
+
+## API
+
+### Instance methods
+- `getRoot()` // '/' | undefined
+- `getDirectory()` // str || ''
+- `getFolder()` // str || ''
+- `getBasename()` // str || ''
+- `getFilename()` // str || ''
+- `getExt()` // str || ''
+- `getSep()` // '/' || '\'
+- `getSegments()` //> Array<String> -- each folder, and the filename, is a segment
+- `setRoot( str )` //> FilesystemPath
+- `setDirectory( str )` //> FilesystemPath
+- `setFolder( str )` //> FilesystemPath
+- `setBasename( str )` //> FilesystemPath
+- `setFilename( str )` //> FilesystemPath
+- `setExt( str )` //> FilesystemPath
+- `setSep( str )` //> FilesystemPath
+- `canonicalize()` //> FilesystemPath
+- `escape()` //> String
+
+Ecosystem methods
+- `toString()` // for JS ecosystem
+- `toJSON()` // for JS ecosystem
+
+Pirated String methods
+- `replace()` // operations on raw path, returns self
+
+Pirated RegExp methods // treats segments as lines unless `/g` flag
+- test
+- match
+- search
+- exec
+
+Pirated Array methods
+- `slice()` // operates on segments
+- `splice()` // operates on segments
+- `push()` // operates on segments
+- `pop()` // operates on segments
+- `shift()` // operates on segments
+- `unshift()` // operates on segments
+
+
+
+### Static methods
+- `canonicalize( path:String [, sep:String ] )` //> String
+- `escape( path:String [, sep:String ] )` //> String
