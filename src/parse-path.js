@@ -11,6 +11,8 @@ module.exports = function parsePath( path, sep = '/' ) {
 	let [ ext, ...fnameParts ] = basename.split('.').reverse()
 	let filename = fnameParts.reverse().join('.')
 
+	let segments = parts.slice().reverse().concat(filename).filter(s => s.trim() !== '')
+
 	return {
 		root,
 		directory,
@@ -18,6 +20,7 @@ module.exports = function parsePath( path, sep = '/' ) {
 		basename,
 		filename,
 		ext,
+		segments,
 		_isAbsolute
 	}
 }
