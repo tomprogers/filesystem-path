@@ -17,13 +17,13 @@ new FilesystemPath( path [, filename [, sep ]]] )
 ## FilesystemPath anatomy
 
 ```
-                                                  ┏┱─ ext
-                                           ┏━━━━┱──── basename
-                                           ┏━━━━━━┱─ filename
-/Users/tomprogers/projects/filesystem─path/README.md
-┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┹─────────── directory
-                           ┗━━━━━━━━━━━┹─────────── folder
-┗──────────────────────────────────────────────────── root
+                                                  ┌┬    ext
+                                           ┌────┬       basename
+                                           ┌───────┬    filename
+/Users/tomprogers/projects/filesystem─path/README.md >- path
+└────────────────────────────────────────┴              directory
+                           └─────────────┴              folder
+└                                                       root
 ```
 
 Thus, for the example path:
