@@ -1,7 +1,7 @@
 const getRoot = require('./get-root')
 
 
-describe(`getRoot( directory, basename, sep )`, () => {
+describe(`getRoot( directory, filename, sep )`, () => {
 
 	it(`returns the empty string if directory does not begin with sep`, () => {
 		expect(

@@ -1,7 +1,7 @@
 const getSegments = require('./get-segments')
 
 
-describe(`getSegments( directory, basename, sep )`, () => {
+describe(`getSegments( directory, filename, sep )`, () => {
 
 	it(`includes every path segment, including filename, in source order`, () => {
 		expect(
@@ -45,7 +45,7 @@ describe(`getSegments( directory, basename, sep )`, () => {
 		])
 	})
 
-	it(`handles just a basename`, () => {
+	it(`handles just a filename`, () => {
 		expect(
 			getSegments('', 'README.md', '/')
 		).toEqual([

@@ -1,7 +1,7 @@
 const getFolder = require('./get-folder')
 
 
-describe(`getFolder( directory, basename, sep )`, () => {
+describe(`getFolder( directory, filename, sep )`, () => {
 
 	it(`returns the final folder before the filename`, () => {
 		expect(

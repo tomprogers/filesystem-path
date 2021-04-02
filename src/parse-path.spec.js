@@ -59,7 +59,7 @@ describe(`parsePath( directory [, filename [, sep ]] )`, () => {
 		})
 	})
 
-	it(`understands just a basename`, () => {
+	it(`understands just a filename`, () => {
 		expect(
 			parsePath('README.md')
 		).toEqual({
