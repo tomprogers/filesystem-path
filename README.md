@@ -106,3 +106,10 @@ Pirated Array methods
 ### Static methods
 - `canonicalize( path:String [, sep:String ] )` //> String
 - `escape( path:String [, sep:String ] )` //> String
+
+
+## Notes
+
+- 'pam.d' solutions:
+  a. add trailing sep to directory to disable guessing // TODO
+  b. pass filename separately as 2nd arg
