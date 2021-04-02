@@ -1,83 +1,179 @@
 const parsePath = require('./parse-path')
-// `/etc/pam.d` // THIS IS MY KRYPTONIE!
 
-describe(`parsePath( path, sep=/ )`, () => {
+
+describe(`parsePath( directory [, basename [, sep ]] )`, () => {
 
 	it(`parses a normal *nix path correctly`, () => {
-		let parsed = parsePath(`/Users/tomprogers/projects/filesystem-path/README.md`)
-
-		expect(parsed.root).toBe(`/`)
-		expect(parsed.directory).toBe(`/Users/tomprogers/projects/filesystem-path`)
-		expect(parsed.folder).toBe(`filesystem-path`)
-		expect(parsed.basename).toBe(`README.md`)
-		expect(parsed.filename).toBe(`README`)
-		expect(parsed.ext).toBe(`md`)
-		expect(parsed._isAbsolute).toBe(true)
+		expect(
+			parsePath(`/Users/tomprogers/projects/filesystem-path/README.md`)
+		).toEqual({
+			directory: '/Users/tomprogers/projects/filesystem-path',
+			basename: 'README.md',
+			sep: '/'
+		})
 	})
 
 	it(`parses a normal Windows path correctly`, () => {
-		let parsed = parsePath(`C:\\Documents and Settings\\tomprogers\\projects\\filesystem-path\\README.md`, `\\`)
-
-		expect(parsed.root).toBe(``)
-		expect(parsed.directory).toBe(`C:\\Documents and Settings\\tomprogers\\projects\\filesystem-path`)
-		expect(parsed.folder).toBe(`filesystem-path`)
-		expect(parsed.basename).toBe(`README.md`)
-		expect(parsed.filename).toBe(`README`)
-		expect(parsed.ext).toBe(`md`)
-		expect(parsed._isAbsolute).toBe(false)
+		expect(
+			parsePath(`C:\\Documents and Settings\\tomprogers\\projects\\filesystem-path\\README.md`, `\\`)
+		).toEqual({
+			directory: 'C:\\Documents and Settings\\tomprogers\\projects\\filesystem-path',
+			basename: 'README.md',
+			sep: '\\'
+		})
 	})
 
 	it(`parses dotfiles correctly`, () => {
-		let parsedNix = parsePath(`/Users/tomprogers/.bash_profile`)
-		expect(parsedNix.root).toBe(`/`)
-		expect(parsedNix.directory).toBe(`/Users/tomprogers`)
-		expect(parsedNix.folder).toBe(`tomprogers`)
-		expect(parsedNix.basename).toBe(`.bash_profile`)
-		expect(parsedNix.filename).toBe(``)
-		expect(parsedNix.ext).toBe(`bash_profile`)
-		expect(parsedNix._isAbsolute).toBe(true)
+		expect(
+			parsePath(`/Users/tomprogers/.bash_profile`)
+		).toEqual({
+			directory: '/Users/tomprogers',
+			basename: '.bash_profile',
+			sep: '/'
+		})
 
-		let parsedWin = parsePath(`C:\\Documents and Settings\\tomprogers\\.ThumbsDB`, `\\`)
-		expect(parsedWin.root).toBe(``)
-		expect(parsedWin.directory).toBe(`C:\\Documents and Settings\\tomprogers`)
-		expect(parsedWin.folder).toBe(`tomprogers`)
-		expect(parsedWin.basename).toBe(`.ThumbsDB`)
-		expect(parsedWin.filename).toBe(``)
-		expect(parsedWin.ext).toBe(`ThumbsDB`)
-		expect(parsedWin._isAbsolute).toBe(false)
+		expect(
+			parsePath(`C:\\Documents and Settings\\tomprogers\\.ThumbsDB`, `\\`)
+		).toEqual({
+			directory: 'C:\\Documents and Settings\\tomprogers',
+			basename: '.ThumbsDB',
+			sep: '\\'
+		})
+	})
+
+	it(`understands the differences between relative & absolute paths`, () => {
+		expect(
+			parsePath(`src/parse-path.js`)
+		).toEqual({
+			directory: 'src',
+			basename: 'parse-path.js',
+			sep: '/'
+		})
+
+		expect(
+			parsePath(`src\\parse-path.min.js`, `\\`)
+		).toEqual({
+			directory: 'src',
+			basename: 'parse-path.min.js',
+			sep: '\\'
+		})
+	})
+
+	it(`understands just a basename`, () => {
+		expect(
+			parsePath('README.md')
+		).toEqual({
+			directory: '',
+			basename: 'README.md',
+			sep: '/'
+		})
+
+		expect(
+			parsePath('README.md', `\\`)
+		).toEqual({
+			directory: '',
+			basename: 'README.md',
+			sep: '\\'
+		})
+	})
+
+	it(`understands just a filename`, () => {
+		expect(
+			parsePath('filename')
+		).toEqual({
+			directory: '',
+			basename: 'filename',
+			sep: '/'
+		})
+
+		expect(
+			parsePath('filename', `\\`)
+		).toEqual({
+			directory: '',
+			basename: 'filename',
+			sep: '\\'
+		})
+	})
+
+	it(`understands just an ext`, () => {
+		expect(
+			parsePath('.gitignore')
+		).toEqual({
+			directory: '',
+			basename: '.gitignore',
+			sep: '/'
+		})
+
+		expect(
+			parsePath('.gitignore', `\\`)
+		).toEqual({
+			directory: '',
+			basename: '.gitignore',
+			sep: '\\'
+		})
+	})
+
+	it(`understands just a directory`, () => {
+		expect(
+			parsePath('/Users/tomprogers')
+		).toEqual({
+			directory: '/Users/tomprogers',
+			basename: '',
+			sep: '/'
+		})
+
+		expect(
+			parsePath('C:\\Documents and Settings\\tomprogers', `\\`)
+		).toEqual({
+			directory: 'C:\\Documents and Settings\\tomprogers',
+			basename: '',
+			sep: '\\'
+		})
+	})
+
+	it(`understands just a slash`, () => {
+		expect(
+			parsePath('/')
+		).toEqual({
+			directory: '/',
+			basename: '',
+			sep: '/'
+		})
+
+		expect(
+			parsePath('/', '/')
+		).toEqual({
+			directory: '/',
+			basename: '',
+			sep: '/'
+		})
+
+		expect(
+			parsePath('\\', `\\`)
+		).toEqual({
+			directory: '\\',
+			basename: '',
+			sep: '\\'
+		})
 	})
 
 
-	// rel & abs
-	// `src/parse-path.js`
+	it(`understands just a slash and an opposing sep`, () => {
+		expect(
+			parsePath('/', '\\')
+		).toEqual({
+			directory: '',
+			basename: '/',
+			sep: '\\'
+		})
 
-	// just a basename
-	// `README.md`
-
-	// just a filename
-	// `README`
-
-	// just an ext
-	// `.gitignore`
-
-	// just a directory
-	// `/Users/tomprogers`
-
-	// just a slash
-	// `/`
-
-	// just a slash and a path sep
-	// `/`, `/`
-
-	// just a slash and an opposing path sep
-	// `\\`, `/`
-
-	// root
-	// directory
-	// folder
-	// basename
-	// filename
-	// ext
-	// _isAbsolute
+		expect(
+			parsePath('\\', `/`)
+		).toEqual({
+			directory: '',
+			basename: '\\',
+			sep: '/'
+		})
+	})
 
 })
