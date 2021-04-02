@@ -9,52 +9,35 @@ Does not actually touch the filesystem.
 
 Create a new instance:
 
-- **new FilesystemPath( path:String [, sep:String = '/' ] )**
-
-```js
-new FilesystemPath('/Users/tomprogers/projects/filesystem-path/README.md')
-//> FilesystemPath { /Users/tomprogers/projects/filesystem-path/README.md }
-
-new FilesystemPath('C:\\projects\\filesystem-path\\README.md', '\\')
-//> FilesystemPath { C:\projects\filesystem-path\README.md }
 ```
-
-- **new FilesystemPath( directory:String [, basename:String [, ext:String [, sep:String = '/' ]]]] )**
-
-```js
-new FilesystemPath('/Users/tomprogers/Documents')
-//> FilesystemPath { /Users/tomprogers/Documents }
-
-new FilesystemPath('/Users/tomprogers/Documents', 'notes.md')
-new FilesystemPath('/Users/tomprogers/Documents', 'notes', 'md')
-//> FilesystemPath { /Users/tomprogers/Documents/notes.md }
-
-new FilesystemPath('/Users/tomprogers/Documents', 'notes.latest', 'md')
-//> FilesystemPath { /Users/tomprogers/Documents/notes.latest.md }
-
-new FilesystemPath('/Users/tomprogers', '.bash_profile')
-new FilesystemPath('/Users/tomprogers', '', 'bash_profile')
-//> FilesystemPath { /Users/tomprogers/.bash_profile }
+new FilesystemPath( path [, filename [, sep ]]] )
 ```
 
 
 ## FilesystemPath anatomy
 
 ```
-                                 basename ─┬────┐ ┌┬─ ext
-                                           ┌───────┬─ filename
+                                                  ┏┱─ ext
+                                           ┏━━━━┱──── basename
+                                           ┏━━━━━━┱─ filename
 /Users/tomprogers/projects/filesystem─path/README.md
-└────────────────────────────────────────┴─ directory
-└─ root                    └─────────────┴─ folder
+┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┹─────────── directory
+                           ┗━━━━━━━━━━━┹─────────── folder
+┗──────────────────────────────────────────────────── root
 ```
 
 Thus, for the example path:
-- `root`: '/'
-- `folder`: 'filesystem-path'
-- `directory`: '/Users/tomprogers/projects/filesystem-path'
-- `basename`: 'README.md'
-- `filename`: 'README'
-- `ext`: 'md'
+
+| Part | Value |
+| --: | :-- |
+| root | `"/"` |
+| folder | `"filesystem-path"` |
+| directory | `"/Users/tomprogers/projects/filesystem-path"` |
+| filename | `"README.md"` |
+| basename | `"README"` |
+| ext | `"md"` |
+
+**Note on "filename" and "basename:"** this library deliberately uses the terms "basename" and "filename" opposite the counterintuitive *nix convention. The "base" plus the "extension" yield the full "filename."
 
 
 ## API
@@ -102,8 +85,8 @@ Pirated Array methods
 
 
 ### Static methods
-- `canonicalize( path:String [, sep:String ] )` //> String
-- `escape( path:String [, sep:String ] )` //> String
+- `canonicalize( path:String [, filename:String [, sep:String ]] )` //> String
+- `escape( path:String [, filename:String [, sep:String ]] )` //> String
 
 
 ## Notes
