@@ -1,7 +1,7 @@
 const getExt = require('./get-ext')
 
 
-describe(`getExt( directory, basename, sep )`, () => {
+describe(`getExt( directory, filename, sep )`, () => {
 
 	it(`handles the typical case`, () => {
 		expect(getExt(null, 'file.ext')).toBe('ext')

@@ -1,24 +1,24 @@
-const getFilename = require('./get-basename')
+const getBasename = require('./get-basename')
 
 
-describe(`getBasename( directory, basename, sep )`, () => {
+describe(`getBasename( directory, filename, sep )`, () => {
 
 	it(`handles the typical case`, () => {
-		expect(getFilename(null, 'file.ext')).toBe('file')
-		expect(getFilename(null, 'multi.dot.name')).toBe('multi.dot')
-		expect(getFilename(null, 'f.e')).toBe('f')
+		expect(getBasename(null, 'file.ext')).toBe('file')
+		expect(getBasename(null, 'multi.dot.name')).toBe('multi.dot')
+		expect(getBasename(null, 'f.e')).toBe('f')
 	})
 
 	it(`handles dotfiles`, () => {
-		expect(getFilename(null, '.dotfile')).toBe('')
+		expect(getBasename(null, '.dotfile')).toBe('')
 	})
 
 	it(`handles files with no ext`, () => {
-		expect(getFilename(null, 'noext')).toBe('noext')
+		expect(getBasename(null, 'noext')).toBe('noext')
 	})
 
 	it(`handles dumb hypotheticals`, () => {
-		expect(getFilename(null, 'sentence.')).toBe('sentence')
+		expect(getBasename(null, 'sentence.')).toBe('sentence')
 	})
 
 })

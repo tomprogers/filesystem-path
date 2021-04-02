@@ -1,9 +1,9 @@
 const getPath = require('./get-path')
 
 
-describe(`getPath( directory, basename, sep )`, () => {
+describe(`getPath( directory, filename, sep )`, () => {
 
-	it(`handles directory + basename`, () => {
+	it(`handles directory + filename`, () => {
 		expect(getPath('/path/to', 'some.fil', '/')).toBe('/path/to/some.fil')
 	})
 
@@ -11,7 +11,7 @@ describe(`getPath( directory, basename, sep )`, () => {
 		expect(getPath('/path/to', '', '/')).toBe('/path/to')
 	})
 
-	it(`handles just basename`, () => {
+	it(`handles just filename`, () => {
 		expect(getPath('', 'some.fil', '/')).toBe('some.fil')
 	})
 
