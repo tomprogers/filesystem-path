@@ -4,7 +4,7 @@ const sep_nix = '/'
 const sep_win = '\\'
 const dot = '.'
 
-module.exports = function parsePath( directory, filename, sep ) {
+module.exports = function parseDFS( directory, filename, sep ) {
 	DEBUG_LOG && console.log(`directory`, JSON.stringify(directory))
 	DEBUG_LOG && console.log(`filename`, JSON.stringify(filename))
 	DEBUG_LOG && console.log(`sep`, JSON.stringify(sep))

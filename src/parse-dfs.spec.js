@@ -1,11 +1,11 @@
-const parsePath = require('./parse-path')
+const parseDFS = require('./parse-dfs')
 
 
-describe(`parsePath( directory [, filename [, sep ]] )`, () => {
+describe(`parseDFS( directory [, filename [, sep ]] )`, () => {
 
 	it(`parses a normal *nix path correctly`, () => {
 		expect(
-			parsePath(`/Users/tomprogers/projects/filesystem-path/README.md`)
+			parseDFS(`/Users/tomprogers/projects/filesystem-path/README.md`)
 		).toEqual({
 			directory: '/Users/tomprogers/projects/filesystem-path',
 			filename: 'README.md',
@@ -15,7 +15,7 @@ describe(`parsePath( directory [, filename [, sep ]] )`, () => {
 
 	it(`parses a normal Windows path correctly`, () => {
 		expect(
-			parsePath(`C:\\Documents and Settings\\tomprogers\\projects\\filesystem-path\\README.md`, `\\`)
+			parseDFS(`C:\\Documents and Settings\\tomprogers\\projects\\filesystem-path\\README.md`, `\\`)
 		).toEqual({
 			directory: 'C:\\Documents and Settings\\tomprogers\\projects\\filesystem-path',
 			filename: 'README.md',
@@ -25,7 +25,7 @@ describe(`parsePath( directory [, filename [, sep ]] )`, () => {
 
 	it(`parses dotfiles correctly`, () => {
 		expect(
-			parsePath(`/Users/tomprogers/.bash_profile`)
+			parseDFS(`/Users/tomprogers/.bash_profile`)
 		).toEqual({
 			directory: '/Users/tomprogers',
 			filename: '.bash_profile',
@@ -33,7 +33,7 @@ describe(`parsePath( directory [, filename [, sep ]] )`, () => {
 		})
 
 		expect(
-			parsePath(`C:\\Documents and Settings\\tomprogers\\.ThumbsDB`, `\\`)
+			parseDFS(`C:\\Documents and Settings\\tomprogers\\.ThumbsDB`, `\\`)
 		).toEqual({
 			directory: 'C:\\Documents and Settings\\tomprogers',
 			filename: '.ThumbsDB',
@@ -43,7 +43,7 @@ describe(`parsePath( directory [, filename [, sep ]] )`, () => {
 
 	it(`understands the differences between relative & absolute paths`, () => {
 		expect(
-			parsePath(`src/parse-path.js`)
+			parseDFS(`src/parse-path.js`)
 		).toEqual({
 			directory: 'src',
 			filename: 'parse-path.js',
@@ -51,7 +51,7 @@ describe(`parsePath( directory [, filename [, sep ]] )`, () => {
 		})
 
 		expect(
-			parsePath(`src\\parse-path.min.js`, `\\`)
+			parseDFS(`src\\parse-path.min.js`, `\\`)
 		).toEqual({
 			directory: 'src',
 			filename: 'parse-path.min.js',
@@ -61,7 +61,7 @@ describe(`parsePath( directory [, filename [, sep ]] )`, () => {
 
 	it(`understands just a filename`, () => {
 		expect(
-			parsePath('README.md')
+			parseDFS('README.md')
 		).toEqual({
 			directory: '',
 			filename: 'README.md',
@@ -69,7 +69,7 @@ describe(`parsePath( directory [, filename [, sep ]] )`, () => {
 		})
 
 		expect(
-			parsePath('README.md', `\\`)
+			parseDFS('README.md', `\\`)
 		).toEqual({
 			directory: '',
 			filename: 'README.md',
@@ -79,7 +79,7 @@ describe(`parsePath( directory [, filename [, sep ]] )`, () => {
 
 	it(`understands just a filename`, () => {
 		expect(
-			parsePath('filename')
+			parseDFS('filename')
 		).toEqual({
 			directory: '',
 			filename: 'filename',
@@ -87,7 +87,7 @@ describe(`parsePath( directory [, filename [, sep ]] )`, () => {
 		})
 
 		expect(
-			parsePath('filename', `\\`)
+			parseDFS('filename', `\\`)
 		).toEqual({
 			directory: '',
 			filename: 'filename',
@@ -97,7 +97,7 @@ describe(`parsePath( directory [, filename [, sep ]] )`, () => {
 
 	it(`understands just an ext`, () => {
 		expect(
-			parsePath('.gitignore')
+			parseDFS('.gitignore')
 		).toEqual({
 			directory: '',
 			filename: '.gitignore',
@@ -105,7 +105,7 @@ describe(`parsePath( directory [, filename [, sep ]] )`, () => {
 		})
 
 		expect(
-			parsePath('.gitignore', `\\`)
+			parseDFS('.gitignore', `\\`)
 		).toEqual({
 			directory: '',
 			filename: '.gitignore',
@@ -115,7 +115,7 @@ describe(`parsePath( directory [, filename [, sep ]] )`, () => {
 
 	it(`understands just a directory`, () => {
 		expect(
-			parsePath('/Users/tomprogers')
+			parseDFS('/Users/tomprogers')
 		).toEqual({
 			directory: '/Users/tomprogers',
 			filename: '',
@@ -123,7 +123,7 @@ describe(`parsePath( directory [, filename [, sep ]] )`, () => {
 		})
 
 		expect(
-			parsePath('C:\\Documents and Settings\\tomprogers', `\\`)
+			parseDFS('C:\\Documents and Settings\\tomprogers', `\\`)
 		).toEqual({
 			directory: 'C:\\Documents and Settings\\tomprogers',
 			filename: '',
@@ -133,7 +133,7 @@ describe(`parsePath( directory [, filename [, sep ]] )`, () => {
 
 	it(`understands just a slash`, () => {
 		expect(
-			parsePath('/')
+			parseDFS('/')
 		).toEqual({
 			directory: '/',
 			filename: '',
@@ -141,7 +141,7 @@ describe(`parsePath( directory [, filename [, sep ]] )`, () => {
 		})
 
 		expect(
-			parsePath('/', '/')
+			parseDFS('/', '/')
 		).toEqual({
 			directory: '/',
 			filename: '',
@@ -149,7 +149,7 @@ describe(`parsePath( directory [, filename [, sep ]] )`, () => {
 		})
 
 		expect(
-			parsePath('\\', `\\`)
+			parseDFS('\\', `\\`)
 		).toEqual({
 			directory: '\\',
 			filename: '',
@@ -160,7 +160,7 @@ describe(`parsePath( directory [, filename [, sep ]] )`, () => {
 
 	it(`understands just a slash and an opposing sep`, () => {
 		expect(
-			parsePath('/', '\\')
+			parseDFS('/', '\\')
 		).toEqual({
 			directory: '',
 			filename: '/',
@@ -168,7 +168,7 @@ describe(`parsePath( directory [, filename [, sep ]] )`, () => {
 		})
 
 		expect(
-			parsePath('\\', `/`)
+			parseDFS('\\', `/`)
 		).toEqual({
 			directory: '',
 			filename: '\\',
