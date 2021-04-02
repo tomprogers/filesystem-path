@@ -42,11 +42,13 @@ new FilesystemPath('/Users/tomprogers', '', 'bash_profile')
 
 ```
                                  basename ─┬────┐ ┌┬─ ext
-                                           README.md
-                                           ├────┴─┴┼─ filename
+                                           │    │ ││
+                                           ┌───────┬─ filename
+                                           │       │
 /Users/tomprogers/projects/filesystem─path/README.md
-├──────────────────────────┬─────────────┼─ directory
-/                          filesystem─path
+│                                        │
+└────────────────────────────────────────┴─ directory
+│                          │             │
 └─ root                    └─────────────┴─ folder
 ```
 
