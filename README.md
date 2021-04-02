@@ -41,13 +41,13 @@ new FilesystemPath('/Users/tomprogers', '', 'bash_profile')
 ## FilesystemPath anatomy
 
 ```
-|                                                    root
-                           |>-----------<|           folder
-|>--------------------------------------<|           directory
-/Users/tomprogers/projects/filesystem-path/README.md
-                                           |>-----<| basename
-                                           |>--<|    filename
-                                                 |-| ext
+                                 basename ─┬────┐ ┌┬─ ext
+                                           README.md
+                                           ├────┴─┴┼─ filename
+/Users/tomprogers/projects/filesystem─path/README.md
+├──────────────────────────┬─────────────┼─ directory
+/                          filesystem─path
+└─ root                    └─────────────┴─ folder
 ```
 
 Thus, for the example path:
