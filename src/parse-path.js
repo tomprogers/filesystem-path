@@ -4,40 +4,40 @@ const sep_nix = '/'
 const sep_win = '\\'
 const dot = '.'
 
-module.exports = function parsePath( directory, basename, sep ) {
+module.exports = function parsePath( directory, filename, sep ) {
 	DEBUG_LOG && console.log(`directory`, JSON.stringify(directory))
-	DEBUG_LOG && console.log(`basename`, JSON.stringify(basename))
+	DEBUG_LOG && console.log(`filename`, JSON.stringify(filename))
 	DEBUG_LOG && console.log(`sep`, JSON.stringify(sep))
 
 	if( typeof directory !== 'string' ) throw new TypeError('directory must be a string')
-	if( !['undefined', 'string'].includes(typeof basename) ) throw new TypeError('basename must be a string or omitted')
+	if( !['undefined', 'string'].includes(typeof filename) ) throw new TypeError('filename must be a string or omitted')
 	if( !['undefined', 'string'].includes(typeof sep) ) throw new TypeError('sep must be a string or omitted')
 
-	// shift args around in case basename was omitted
+	// shift args around in case filename was omitted
 
-	let basenameIsASep = basename === sep_nix || basename === sep_win
-	DEBUG_LOG && console.log(`basenameIsASep`, JSON.stringify(basenameIsASep))
-	if( basenameIsASep && sep === undefined ) {
-		sep = basename
-		basename = ''
+	let filenameIsASep = filename === sep_nix || filename === sep_win
+	DEBUG_LOG && console.log(`filenameIsASep`, JSON.stringify(filenameIsASep))
+	if( filenameIsASep && sep === undefined ) {
+		sep = filename
+		filename = ''
 	}
 
-	if( !basename ) basename = ''
+	if( !filename ) filename = ''
 	if( !sep ) sep = sep_nix
 
-	let directoryIsBasename = !directory.includes(sep)
-	DEBUG_LOG && console.log(`directoryIsBasename`, JSON.stringify(directoryIsBasename))
-	if(directoryIsBasename) {
-		basename = directory
+	let directoryIsFilename = !directory.includes(sep)
+	DEBUG_LOG && console.log(`directoryIsFilename`, JSON.stringify(directoryIsFilename))
+	if(directoryIsFilename) {
+		filename = directory
 		directory = ''
 	}
 
 	// now that args have been aligned across different calling patterns, provide defaults
-	if( basename.includes(sep) ) throw new RangeError('basename must not contain directory separator')
+	if( filename.includes(sep) ) throw new RangeError('filename must not contain directory separator')
 
 	// now that args are straightened-out, normalize inputs
 	DEBUG_LOG && console.log(`directory`, JSON.stringify(directory))
-	DEBUG_LOG && console.log(`basename`, JSON.stringify(basename))
+	DEBUG_LOG && console.log(`filename`, JSON.stringify(filename))
 	DEBUG_LOG && console.log(`sep`, JSON.stringify(sep))
 
 
@@ -61,7 +61,7 @@ module.exports = function parsePath( directory, basename, sep ) {
 	if(rooted) directory = sep + directory
 
 	// if filename wasn't provided, and directory arg's final seg has a dotted suffix, treat final seg as the filename
-	if( !basename && !trailed ) {
+	if( !filename && !trailed ) {
 		DEBUG_LOG && console.log(`checking final segment for extension...`)
 		let lastDotIdx = directory.lastIndexOf(dot)
 		let lastSepIdx = directory.lastIndexOf(sep)
@@ -71,14 +71,14 @@ module.exports = function parsePath( directory, basename, sep ) {
 		let finalSegmentHasExt = lastDotIdx > lastSepIdx && lastDotIdx < directory.length - 1
 
 		if( finalSegmentHasExt ) {
-			basename = directory.slice(lastSepIdx + 1)
+			filename = directory.slice(lastSepIdx + 1)
 			directory = directory.slice(0, lastSepIdx)
 		}
 	}
 
 	return {
 		directory,
-		basename,
+		filename,
 		sep
 	}
 }

@@ -1,14 +1,14 @@
 const parsePath = require('./parse-path')
 
 
-describe(`parsePath( directory [, basename [, sep ]] )`, () => {
+describe(`parsePath( directory [, filename [, sep ]] )`, () => {
 
 	it(`parses a normal *nix path correctly`, () => {
 		expect(
 			parsePath(`/Users/tomprogers/projects/filesystem-path/README.md`)
 		).toEqual({
 			directory: '/Users/tomprogers/projects/filesystem-path',
-			basename: 'README.md',
+			filename: 'README.md',
 			sep: '/'
 		})
 	})
@@ -18,7 +18,7 @@ describe(`parsePath( directory [, basename [, sep ]] )`, () => {
 			parsePath(`C:\\Documents and Settings\\tomprogers\\projects\\filesystem-path\\README.md`, `\\`)
 		).toEqual({
 			directory: 'C:\\Documents and Settings\\tomprogers\\projects\\filesystem-path',
-			basename: 'README.md',
+			filename: 'README.md',
 			sep: '\\'
 		})
 	})
@@ -28,7 +28,7 @@ describe(`parsePath( directory [, basename [, sep ]] )`, () => {
 			parsePath(`/Users/tomprogers/.bash_profile`)
 		).toEqual({
 			directory: '/Users/tomprogers',
-			basename: '.bash_profile',
+			filename: '.bash_profile',
 			sep: '/'
 		})
 
@@ -36,7 +36,7 @@ describe(`parsePath( directory [, basename [, sep ]] )`, () => {
 			parsePath(`C:\\Documents and Settings\\tomprogers\\.ThumbsDB`, `\\`)
 		).toEqual({
 			directory: 'C:\\Documents and Settings\\tomprogers',
-			basename: '.ThumbsDB',
+			filename: '.ThumbsDB',
 			sep: '\\'
 		})
 	})
@@ -46,7 +46,7 @@ describe(`parsePath( directory [, basename [, sep ]] )`, () => {
 			parsePath(`src/parse-path.js`)
 		).toEqual({
 			directory: 'src',
-			basename: 'parse-path.js',
+			filename: 'parse-path.js',
 			sep: '/'
 		})
 
@@ -54,7 +54,7 @@ describe(`parsePath( directory [, basename [, sep ]] )`, () => {
 			parsePath(`src\\parse-path.min.js`, `\\`)
 		).toEqual({
 			directory: 'src',
-			basename: 'parse-path.min.js',
+			filename: 'parse-path.min.js',
 			sep: '\\'
 		})
 	})
@@ -64,7 +64,7 @@ describe(`parsePath( directory [, basename [, sep ]] )`, () => {
 			parsePath('README.md')
 		).toEqual({
 			directory: '',
-			basename: 'README.md',
+			filename: 'README.md',
 			sep: '/'
 		})
 
@@ -72,7 +72,7 @@ describe(`parsePath( directory [, basename [, sep ]] )`, () => {
 			parsePath('README.md', `\\`)
 		).toEqual({
 			directory: '',
-			basename: 'README.md',
+			filename: 'README.md',
 			sep: '\\'
 		})
 	})
@@ -82,7 +82,7 @@ describe(`parsePath( directory [, basename [, sep ]] )`, () => {
 			parsePath('filename')
 		).toEqual({
 			directory: '',
-			basename: 'filename',
+			filename: 'filename',
 			sep: '/'
 		})
 
@@ -90,7 +90,7 @@ describe(`parsePath( directory [, basename [, sep ]] )`, () => {
 			parsePath('filename', `\\`)
 		).toEqual({
 			directory: '',
-			basename: 'filename',
+			filename: 'filename',
 			sep: '\\'
 		})
 	})
@@ -100,7 +100,7 @@ describe(`parsePath( directory [, basename [, sep ]] )`, () => {
 			parsePath('.gitignore')
 		).toEqual({
 			directory: '',
-			basename: '.gitignore',
+			filename: '.gitignore',
 			sep: '/'
 		})
 
@@ -108,7 +108,7 @@ describe(`parsePath( directory [, basename [, sep ]] )`, () => {
 			parsePath('.gitignore', `\\`)
 		).toEqual({
 			directory: '',
-			basename: '.gitignore',
+			filename: '.gitignore',
 			sep: '\\'
 		})
 	})
@@ -118,7 +118,7 @@ describe(`parsePath( directory [, basename [, sep ]] )`, () => {
 			parsePath('/Users/tomprogers')
 		).toEqual({
 			directory: '/Users/tomprogers',
-			basename: '',
+			filename: '',
 			sep: '/'
 		})
 
@@ -126,7 +126,7 @@ describe(`parsePath( directory [, basename [, sep ]] )`, () => {
 			parsePath('C:\\Documents and Settings\\tomprogers', `\\`)
 		).toEqual({
 			directory: 'C:\\Documents and Settings\\tomprogers',
-			basename: '',
+			filename: '',
 			sep: '\\'
 		})
 	})
@@ -136,7 +136,7 @@ describe(`parsePath( directory [, basename [, sep ]] )`, () => {
 			parsePath('/')
 		).toEqual({
 			directory: '/',
-			basename: '',
+			filename: '',
 			sep: '/'
 		})
 
@@ -144,7 +144,7 @@ describe(`parsePath( directory [, basename [, sep ]] )`, () => {
 			parsePath('/', '/')
 		).toEqual({
 			directory: '/',
-			basename: '',
+			filename: '',
 			sep: '/'
 		})
 
@@ -152,7 +152,7 @@ describe(`parsePath( directory [, basename [, sep ]] )`, () => {
 			parsePath('\\', `\\`)
 		).toEqual({
 			directory: '\\',
-			basename: '',
+			filename: '',
 			sep: '\\'
 		})
 	})
@@ -163,7 +163,7 @@ describe(`parsePath( directory [, basename [, sep ]] )`, () => {
 			parsePath('/', '\\')
 		).toEqual({
 			directory: '',
-			basename: '/',
+			filename: '/',
 			sep: '\\'
 		})
 
@@ -171,7 +171,7 @@ describe(`parsePath( directory [, basename [, sep ]] )`, () => {
 			parsePath('\\', `/`)
 		).toEqual({
 			directory: '',
-			basename: '\\',
+			filename: '\\',
 			sep: '/'
 		})
 	})

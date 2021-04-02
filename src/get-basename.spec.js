@@ -1,7 +1,7 @@
-const getFilename = require('./get-filename')
+const getFilename = require('./get-basename')
 
 
-describe(`getFilename( directory, basename, sep )`, () => {
+describe(`getBasename( directory, basename, sep )`, () => {
 
 	it(`handles the typical case`, () => {
 		expect(getFilename(null, 'file.ext')).toBe('file')

@@ -1,4 +1,4 @@
-module.exports = function getSegments( directory, basename, sep ) {
+module.exports = function getSegments( directory, filename, sep ) {
 	let segments = []
 
 	if( directory ) {
@@ -6,7 +6,7 @@ module.exports = function getSegments( directory, basename, sep ) {
 		segments = segments.concat(directory.split(sep))
 	}
 
-	if(basename) segments.push(basename)
+	if(filename) segments.push(filename)
 
 	return segments
 }
