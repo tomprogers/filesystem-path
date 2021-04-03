@@ -25,7 +25,7 @@ module.exports = function parseDFS( directory, filename, sep ) {
 	if( !filename ) filename = ''
 	if( !sep ) sep = sep_nix
 
-	let directoryIsFilename = !directory.includes(sep)
+	let directoryIsFilename = directory && !directory.includes(sep)
 	DEBUG_LOG && console.log(`directoryIsFilename`, JSON.stringify(directoryIsFilename))
 	if(directoryIsFilename) {
 		filename = directory
