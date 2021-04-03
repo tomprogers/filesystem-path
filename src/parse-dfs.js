@@ -68,7 +68,11 @@ module.exports = function parseDFS( directory, filename, sep ) {
 
 	if( rooted ) directory = sep + directory
 
-	// if filename wasn't provided, and directory arg's final seg has a dotted suffix, treat final seg as the filename
+	/*
+		If filename wasn't provided, AND directory doesn't end with a sep,
+		AND directory's final segment looks like a filename (i.e. it has a dotted suffix),
+		then treat final seg as the filename.
+	*/
 	if( !filename && !trailed ) {
 		DEBUG_LOG && console.log(`checking final segment for extension...`)
 		let lastDotIdx = directory.lastIndexOf(dot)

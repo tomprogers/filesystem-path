@@ -92,5 +92,5 @@ Pirated Array methods
 ## Notes
 
 - 'pam.d' solutions:
-  a. add trailing sep to directory to disable guessing // TODO
+  a. add trailing sep to directory to disable guessing
   b. pass filename separately as 2nd arg
