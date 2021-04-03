@@ -9,11 +9,16 @@ module.exports = function parseDFS( directory, filename, sep ) {
 	DEBUG_LOG && console.log(`filename`, JSON.stringify(filename))
 	DEBUG_LOG && console.log(`sep`, JSON.stringify(sep))
 
-	if( typeof directory !== 'string' ) throw new TypeError('directory must be a string')
-	if( !['undefined', 'string'].includes(typeof filename) ) throw new TypeError('filename must be a string or omitted')
-	if( !['undefined', 'string'].includes(typeof sep) ) throw new TypeError('sep must be a string or omitted')
+	if( typeof directory !== 'string' )
+		throw new TypeError('argument must be a string')
 
-	// shift args around in case filename was omitted
+	if( !['undefined', 'string'].includes(typeof filename) )
+		throw new TypeError('argument must be a string or omitted')
+
+	if( !['undefined', 'string'].includes(typeof sep) )
+		throw new TypeError('sep must be a string or omitted')
+
+	// shift ags around to accommodate overloaded sig
 
 	let filenameIsASep = filename === sep_nix || filename === sep_win
 	DEBUG_LOG && console.log(`filenameIsASep`, JSON.stringify(filenameIsASep))
@@ -27,19 +32,18 @@ module.exports = function parseDFS( directory, filename, sep ) {
 
 	let directoryIsFilename = directory && !directory.includes(sep)
 	DEBUG_LOG && console.log(`directoryIsFilename`, JSON.stringify(directoryIsFilename))
-	if(directoryIsFilename) {
+	if( directoryIsFilename ) {
 		filename = directory
 		directory = ''
 	}
 
-	// now that args have been aligned across different calling patterns, provide defaults
-	if( filename.includes(sep) ) throw new RangeError('filename must not contain directory separator')
+	if( filename.includes(sep) )
+		throw new RangeError('filename must not contain directory separator')
 
 	// now that args are straightened-out, normalize inputs
 	DEBUG_LOG && console.log(`directory`, JSON.stringify(directory))
 	DEBUG_LOG && console.log(`filename`, JSON.stringify(filename))
 	DEBUG_LOG && console.log(`sep`, JSON.stringify(sep))
-
 
 	// condense any beginning seps
 	let rooted = false
@@ -58,7 +62,7 @@ module.exports = function parseDFS( directory, filename, sep ) {
 	DEBUG_LOG && console.log(`rooted`, JSON.stringify(rooted))
 	DEBUG_LOG && console.log(`trailed`, JSON.stringify(trailed))
 
-	if(rooted) directory = sep + directory
+	if( rooted ) directory = sep + directory
 
 	// if filename wasn't provided, and directory arg's final seg has a dotted suffix, treat final seg as the filename
 	if( !filename && !trailed ) {
