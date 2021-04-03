@@ -1,6 +1,6 @@
 const parseDFS = require('./parse-dfs')
 const _getRoot = require('./get-root')
-const _getFolder = require('./get-folder')
+const _getFolders = require('./get-folders')
 const _getBasename = require('./get-basename')
 const _getExt = require('./get-ext')
 const _getSegments = require('./get-segments')
