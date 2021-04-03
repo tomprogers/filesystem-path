@@ -30,6 +30,10 @@ module.exports = function parseDFS( directory, filename, sep ) {
 	if( !filename ) filename = ''
 	if( !sep ) sep = sep_nix
 
+	let otherSep = sep === sep_nix ? sep_win : sep_nix
+	if( directory.includes(otherSep) )
+		throw new SyntaxError('directory must not contain mismatched sep')
+
 	let directoryIsFilename = directory && !directory.includes(sep)
 	DEBUG_LOG && console.log(`directoryIsFilename`, JSON.stringify(directoryIsFilename))
 	if( directoryIsFilename ) {
