@@ -140,7 +140,7 @@ describe(`setBasename( directory, filename, sep, newBasename )`, () => {
 		expect(() => {
 			setBasename('', '', '/', 5)
 		}).toThrow(
-			SyntaxError
+			TypeError
 		)
 	})
 
