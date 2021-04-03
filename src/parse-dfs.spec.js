@@ -158,22 +158,18 @@ describe(`parseDFS( directory [, filename [, sep ]] )`, () => {
 	})
 
 
-	it(`understands just a slash and an opposing sep`, () => {
-		expect(
+	it(`throws SyntaxError if directory uses mismatched sep`, () => {
+		expect(() => {
 			parseDFS('/', '\\')
-		).toEqual({
-			directory: '',
-			filename: '/',
-			sep: '\\'
-		})
+		}).toThrow(
+			SyntaxError
+		)
 
-		expect(
+		expect(() => {
 			parseDFS('\\', `/`)
-		).toEqual({
-			directory: '',
-			filename: '\\',
-			sep: '/'
-		})
+		}).toThrow(
+			SyntaxError
+		)
 	})
 
 })
