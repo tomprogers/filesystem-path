@@ -4,6 +4,6 @@
 .nvmrc
 .vscode/
 icon.png
-src/**/*.spec.js
+src/
 workspace.*
 yarn.lock
