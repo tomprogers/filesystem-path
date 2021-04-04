@@ -12,7 +12,7 @@ module.exports = function setExt( directory, filename, sep, newExt ) {
 	// TODO: decide on correct behavior for when newExt is JUST dots, and nail down
 	while( newExt.startsWith(dot) )
 		newExt = newExt.slice(1)
-	if(newExt) newExt = dot + newExt
+	if( newExt ) newExt = dot + newExt
 
 	return parseDFS(
 		directory,
