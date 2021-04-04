@@ -13,9 +13,14 @@
     "path"
   ],
   "scripts": {
-    "test": "jest"
+    "test": "jest",
+    "build": "NODE_ENV=prod babel src --ignore src/**/*.spec.js --out-dir dist --source-maps",
+    "prepublish": "yarn build"
   },
   "devDependencies": {
+    "@babel/cli": "^7.13.14",
+    "@babel/plugin-proposal-class-properties": "^7.13.0",
+    "@babel/preset-env": "^7.13.12",
     "jest": "^26.6.3"
   }
 }
