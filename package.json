@@ -8,6 +8,12 @@
   "main": "dist/index.js",
   "repository": "github:tomprogers/filesystem-path",
   "keywords": [
+		"basename",
+		"directory-separator",
+		"directory",
+		"file-extension",
+		"filename",
+		"folder",
     "file",
     "filesystem",
     "path"
