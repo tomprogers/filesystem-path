@@ -1,6 +1,6 @@
 const dot = '.'
 
-module.exports = function getFilename( directory, filename, sep ) {
+module.exports = function getBasename( directory, filename, sep ) {
 	let lastDotIdx = filename.lastIndexOf(dot)
 
 	if(lastDotIdx === -1) return filename
