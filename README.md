@@ -1,8 +1,8 @@
-# class FilesystemPath
+# `FilesystemPath` class
 
 A utility class, like native `Date`, that provides a fluent interface over
-strings representing paths on a computer filesystem, rather than doing surgery
-on strings.
+strings representing paths on a computer filesystem. Better than doing string
+surgery.
 
 Does not actually touch the filesystem.
 
@@ -35,7 +35,7 @@ home.setDirectory('/Users/tomprogers/projects/filesystem-path')
 ## Anatomy of a FilesystemPath
 
 The **FilesystemPath** class provides methods for accessing and mutating
-specific portions of a path by name:
+specific portions of a path by name. The parts are:
 
 ```
 /Users/tomprogers/projects/filesystem─path/README.md
@@ -57,7 +57,7 @@ specific portions of a path by name:
                                            └────┴      basename
 
 /Users/tomprogers/projects/filesystem─path/README.md
-                                                 └─┴   ext
+                                                 └─┴   ext (incl. dot)
 
 /Users/tomprogers/projects/filesystem─path/README.md
 └                                                      root (the slash)
@@ -82,67 +82,65 @@ counterintuitive. Here, the "base" plus the "extension" yields the full
 "filename."
 </sup>
 
+
 ## API
+
+
+### Construction
+
+The **FilesystemPath** constructor supports a few signatures:
+
+- `new FilesystemPath( path )`
+
+This is the easiest way, but it forces the parser to guess what the directory separator is, and whether the final segment names a directory or a file. This can produce bad results in some cases.
+
+- `new FilesystemPath( directory, filename, sep )`
+
+Specifies everything unambiguously, guaranteed to produce an instance that behaves correctly.
+
+```js
+new FilesystemPath( '/Users/tomprogers/projects/filesystem-path', 'README.md', '/' )
+```
+
+Argument order is important, but all three arguments are optional, so all these also work:
+
+- `new FilesystemPath( path, sep )`
+- `new FilesystemPath( directory, filename )`
+- `new FilesystemPath( filename )`
+- `new FilesystemPath( filename, sep )`
+- `new FilesystemPath( sep )`
 
 
 ### Instance methods
 
-- `getBasename()` // str || ''
-- `getDirectory()` // str || ''
-- `getExt()` // str || ''
-- `getFilename()` // str || ''
-- `getFolders()` // Array<String> -- each folder in order, minus anything known to be a filename
-- `getRoot()` // '/' | undefined
-- `getSegments()` //> Array<String> -- each folder, and the filename, is a segment
-- `getSep()` // '/' || '\'
-- `setBasename( str )` //> FilesystemPath
-- `setDirectory( str )` //> FilesystemPath
-- `setExt( str )` //> FilesystemPath
-- `setFilename( str )` //> FilesystemPath
-- `setFolder( str )` //> FilesystemPath
-- `setRoot( str )` //> FilesystemPath
-- `setSep( str )` //> FilesystemPath
-- `canonicalize()` //> FilesystemPath
-- `escape()` //> String
+Every instance has methods for getting and setting the different parts of the
+path. Generally speaking, every getter returns a String, and every setter returns the mutated instance (to support chaining).
 
-
-### JS ecosystem methods
-
-- `toString()` // for JS ecosystem
-- `toJSON()` // for JS ecosystem
-
-
-### Borrowed String methods
-
-- `replace()` // like String.replace, operates on raw path, returns self
-
-
-### Borrowed RegExp methods // treats segments as lines unless `/g` flag
-
-- test
-- match
-- search
-- exec
-
-
-### Borrowed Array methods
-
-- `slice()` // operates on segments
-- `splice()` // operates on segments
-- `push()` // operates on segments
-- `pop()` // operates on segments
-- `shift()` // operates on segments
-- `unshift()` // operates on segments
-
-
-### Static methods
-
-- `canonicalize( path:String [, filename:String [, sep:String ]] )` //> String
-- `escape( path:String [, filename:String [, sep:String ]] )` //> String
-
-
-## Notes
-
-- 'pam.d' solutions:
-  a. add trailing sep to directory to disable guessing
-  b. pass filename separately as 2nd arg
+- `getBasename()` returns the portion of the filename before the final dot
+- `getDirectory()` returns the entire path minus the filename and any directory
+separator immediately preceding the filename
+- `getExt()` returns the shortest dotted suffix (with dot) from the final path
+segment (if the final segment is known to be a file and not a directory whose
+name includes a dot)
+- `getFilename()` returns the final path segment if that segment is known to not
+be a directory
+- `getFolders()` returns an array of the folders named in the path
+- `getRoot()` returns the first character of the path if that character is a
+directory separator
+- `getSegments()` returns an array of the folders named in the path, followed by
+the filename (if there is one)
+- `getSep()` returns whichever slash character the path uses as a directory
+separator
+- `setBasename( newBasename: String )` overwrites the basename (or adds one, if
+initially blank)
+- `setDirectory( newDirectory: String )` overwrites the directory (or adds one,
+if initially blank)
+- `setExt( newExt: String )` overwrites the ext (or adds one, if initially blank)
+- `setFilename( newFilename: String )` overwrites the filename (or adds one, if
+initially blank)
+- `setFolders( newFolders: Array<String> )` replaces the entire set of path segments before
+the filename
+- `setRoot( newRoot: String|Boolean )` changes whether the path is rooted or not
+- `setSegments( newSegments: Array<String> )` overwrites the list of folders (like `setFolders`), plus the filename
+- `setSep( newSep: String )` changes the directory separator that joins the path segments (only accepts the two slashes)
+- `toString()` returns the complete path as a string
