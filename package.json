@@ -1,6 +1,6 @@
 {
   "name": "filesystem-path",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "Fluent interface over strings representing filesystem paths",
   "author": "Tom Rogers <tom@roguevendor.com>",
   "license": "MIT",
