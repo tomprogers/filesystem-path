@@ -1,15 +1,21 @@
 {
   "name": "filesystem-path",
   "version": "0.2.0",
-  "description": "Fluent interface over strings representing filesystem paths",
+  "description": "ES6 class that provides a fluent interface over strings representing filesystem paths",
   "author": "Tom Rogers <tom@roguevendor.com>",
+  "private": false,
   "license": "MIT",
-  "private": true,
-  "main": "src/index.js",
+  "main": "dist/index.js",
+  "repository": "github:tomprogers/filesystem-path",
+  "keywords": [
+    "file",
+    "filesystem",
+    "path"
+  ],
   "scripts": {
     "test": "jest"
   },
-  "dependencies": {
+  "devDependencies": {
     "jest": "^26.6.3"
   }
 }

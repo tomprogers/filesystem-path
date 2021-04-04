@@ -1,0 +1,9 @@
+.babelrc
+.gitignore
+.npmignore
+.nvmrc
+.vscode/
+icon.png
+src/**/*.spec.js
+workspace.*
+yarn.lock
