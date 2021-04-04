@@ -1,54 +1,92 @@
-# ES6 FilesystemPath class
+# class FilesystemPath
 
-A utility class, like native `Date`, that provides a fluent interface over strings representing filesystem paths.
+A utility class, like native `Date`, that provides a fluent interface over
+strings representing paths on a computer filesystem, rather than doing surgery
+on strings.
 
 Does not actually touch the filesystem.
 
 
-## Usage
+## Installation and usage
 
-Create a new instance:
+Install from npm:
+
+```sh
+npm install filesystem-path
+```
+
+
+Import and use the class:
+
+```js
+const FilesystemPath = require('filesystem-path')
+
+let home = new FilesystemPath('/Users/tomprogers')
+//> '/Users/tomprogers'
+
+home.setFilename('.npmrc')
+//> '/Users/tomprogers/.npmrc'
+
+home.setDirectory('/Users/tomprogers/projects/filesystem-path')
+//> '/Users/tomprogers/projects/filesystem-path/.npmrc'
+```
+
+
+## Anatomy of a FilesystemPath
+
+The **FilesystemPath** class provides methods for accessing and mutating
+specific portions of a path by name:
 
 ```
-new FilesystemPath( path [, filename [, sep ]]] )
-```
+/Users/tomprogers/projects/filesystem─path/README.md
+└──────────────────────────────────────────────────┴   path
 
+/Users/tomprogers/projects/filesystem─path/README.md
+└────────────────────────────────────────┴             directory
 
-## FilesystemPath anatomy
+/Users/tomprogers/projects/filesystem─path/README.md
+ └───┘ └────────┘ └──────┘ └─────────────┘ └───────┴   segments (array)
 
-```
-                                                 ┌─┬    ext
-                                           ┌────┬       basename
-                                           ┌───────┬    filename
-/Users/tomprogers/projects/filesystem─path/README.md >- path
-└────────────────────────────────────────┴              directory
- └───┘ └────────┘ └──────┘ └─────────────┘ └───────┴    segments (array)
- └───┘ └────────┘ └──────┘ └─────────────┴              folders (array)
-└                                                       root
+/Users/tomprogers/projects/filesystem─path/README.md
+ └───┘ └────────┘ └──────┘ └─────────────┴             folders (array)
+
+/Users/tomprogers/projects/filesystem─path/README.md
+                                           └───────┴   filename
+
+/Users/tomprogers/projects/filesystem─path/README.md
+                                           └────┴      basename
+
+/Users/tomprogers/projects/filesystem─path/README.md
+                                                 └─┴   ext
+
+/Users/tomprogers/projects/filesystem─path/README.md
+└                                                      root (the slash)
 ```
 
 Thus, for the example path:
 
-| Part | Value |
-| --: | :-- |
-| root | `"/"` |
-| folders | `[ "Users", "tomprogers", "projects", "filesystem─path" ]` |
-| segments | `[ "Users", "tomprogers", "projects", "filesystem─path", "README.md" ]` |
+| Part      | Value |
+|       --: | :-- |
+| root      | `"/"` |
+| folders   | `[ "Users", "tomprogers", "projects", "filesystem─path" ]` |
+| segments  | `[ "Users", "tomprogers", "projects", "filesystem─path", "README.md" ]` |
 | directory | `"/Users/tomprogers/projects/filesystem-path"` |
-| filename | `"README.md"` |
-| basename | `"README"` |
-| ext | `".md"` |
+| filename  | `"README.md"` |
+| basename  | `"README"` |
+| ext       | `".md"` |
 
-**Note on "filename" and "basename:"** this library deliberately uses the terms "basename" and "filename" opposite the counterintuitive *nix convention. The "base" plus the "extension" yield the full "filename."
-
+<sup>
+Note: this library deliberately uses the terms "basename" and "filename"
+opposite the *nix convention, which I've always felt is obviously
+counterintuitive. Here, the "base" plus the "extension" yields the full
+"filename."
+</sup>
 
 ## API
 
 
 ### Instance methods
 
-- `canonicalize()` //> FilesystemPath
-- `escape()` //> String
 - `getBasename()` // str || ''
 - `getDirectory()` // str || ''
 - `getExt()` // str || ''
@@ -64,6 +102,8 @@ Thus, for the example path:
 - `setFolder( str )` //> FilesystemPath
 - `setRoot( str )` //> FilesystemPath
 - `setSep( str )` //> FilesystemPath
+- `canonicalize()` //> FilesystemPath
+- `escape()` //> String
 
 
 ### JS ecosystem methods
