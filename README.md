@@ -17,12 +17,13 @@ new FilesystemPath( path [, filename [, sep ]]] )
 ## FilesystemPath anatomy
 
 ```
-                                                  ┌┬    ext
+                                                 ┌─┬    ext
                                            ┌────┬       basename
                                            ┌───────┬    filename
 /Users/tomprogers/projects/filesystem─path/README.md >- path
 └────────────────────────────────────────┴              directory
-                           └─────────────┴              folder
+ └───┘ └────────┘ └──────┘ └─────────────┘ └───────┴    segments (array)
+ └───┘ └────────┘ └──────┘ └─────────────┴              folders (array)
 └                                                       root
 ```
 
@@ -31,50 +32,61 @@ Thus, for the example path:
 | Part | Value |
 | --: | :-- |
 | root | `"/"` |
-| folder | `"filesystem-path"` |
+| folders | `[ "Users", "tomprogers", "projects", "filesystem─path" ]` |
+| segments | `[ "Users", "tomprogers", "projects", "filesystem─path", "README.md" ]` |
 | directory | `"/Users/tomprogers/projects/filesystem-path"` |
 | filename | `"README.md"` |
 | basename | `"README"` |
-| ext | `"md"` |
+| ext | `".md"` |
 
 **Note on "filename" and "basename:"** this library deliberately uses the terms "basename" and "filename" opposite the counterintuitive *nix convention. The "base" plus the "extension" yield the full "filename."
 
 
 ## API
 
+
 ### Instance methods
-- `getRoot()` // '/' | undefined
-- `getDirectory()` // str || ''
-- `getFolder()` // str || ''
-- `getBasename()` // str || ''
-- `getFilename()` // str || ''
-- `getExt()` // str || ''
-- `getSep()` // '/' || '\'
-- `getSegments()` //> Array<String> -- each folder, and the filename, is a segment
-- `setRoot( str )` //> FilesystemPath
-- `setDirectory( str )` //> FilesystemPath
-- `setFolder( str )` //> FilesystemPath
-- `setBasename( str )` //> FilesystemPath
-- `setFilename( str )` //> FilesystemPath
-- `setExt( str )` //> FilesystemPath
-- `setSep( str )` //> FilesystemPath
+
 - `canonicalize()` //> FilesystemPath
 - `escape()` //> String
+- `getBasename()` // str || ''
+- `getDirectory()` // str || ''
+- `getExt()` // str || ''
+- `getFilename()` // str || ''
+- `getFolders()` // Array<String> -- each folder in order, minus anything known to be a filename
+- `getRoot()` // '/' | undefined
+- `getSegments()` //> Array<String> -- each folder, and the filename, is a segment
+- `getSep()` // '/' || '\'
+- `setBasename( str )` //> FilesystemPath
+- `setDirectory( str )` //> FilesystemPath
+- `setExt( str )` //> FilesystemPath
+- `setFilename( str )` //> FilesystemPath
+- `setFolder( str )` //> FilesystemPath
+- `setRoot( str )` //> FilesystemPath
+- `setSep( str )` //> FilesystemPath
 
-Ecosystem methods
+
+### JS ecosystem methods
+
 - `toString()` // for JS ecosystem
 - `toJSON()` // for JS ecosystem
 
-Pirated String methods
-- `replace()` // operations on raw path, returns self
 
-Pirated RegExp methods // treats segments as lines unless `/g` flag
+### Borrowed String methods
+
+- `replace()` // like String.replace, operates on raw path, returns self
+
+
+### Borrowed RegExp methods // treats segments as lines unless `/g` flag
+
 - test
 - match
 - search
 - exec
 
-Pirated Array methods
+
+### Borrowed Array methods
+
 - `slice()` // operates on segments
 - `splice()` // operates on segments
 - `push()` // operates on segments
@@ -83,8 +95,8 @@ Pirated Array methods
 - `unshift()` // operates on segments
 
 
-
 ### Static methods
+
 - `canonicalize( path:String [, filename:String [, sep:String ]] )` //> String
 - `escape( path:String [, filename:String [, sep:String ]] )` //> String
 
