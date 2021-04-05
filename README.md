@@ -94,6 +94,14 @@ The **FilesystemPath** constructor supports a few signatures:
 
 This is the easiest way, but it forces the parser to guess what the directory separator is, and whether the final segment names a directory or a file. This can produce bad results in some cases.
 
+Here, the parser misinterprets the final path segment as a filename because the final segment has a dotted suffix that looks like a file extension, and because no hints are provided to suggest otherwise:
+
+```js
+// `/etc/pam.d` is a directory on *nix systems that houses PAM stuff, not a file
+new FilesystemPath('/etc/pam.d')
+//> directory='/etc'   filename='pam.d'
+```
+
 - `new FilesystemPath( directory, filename, sep )`
 
 Specifies everything unambiguously, guaranteed to produce an instance that behaves correctly.
