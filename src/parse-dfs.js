@@ -5,9 +5,7 @@ const sep_win = '\\'
 const dot = '.'
 
 module.exports = function parseDFS( directory, filename, sep ) {
-	DEBUG_LOG && console.log(`directory`, JSON.stringify(directory))
-	DEBUG_LOG && console.log(`filename`, JSON.stringify(filename))
-	DEBUG_LOG && console.log(`sep`, JSON.stringify(sep))
+	DEBUG_LOG && console.log( `raw arguments`, `\n  directory`, JSON.stringify(directory), `\n  filename`, JSON.stringify(filename), `\n  sep`, JSON.stringify(sep) )
 
 	if( typeof directory !== 'string' )
 		throw new TypeError('argument must be a string')
@@ -50,16 +48,15 @@ module.exports = function parseDFS( directory, filename, sep ) {
 		throw new RangeError('filename must not contain directory separator')
 
 	// now that args are straightened-out, normalize inputs
-	DEBUG_LOG && console.log(`directory`, JSON.stringify(directory))
-	DEBUG_LOG && console.log(`filename`, JSON.stringify(filename))
-	DEBUG_LOG && console.log(`sep`, JSON.stringify(sep))
+	DEBUG_LOG && console.log( `organized arguments`, `\n  directory`, JSON.stringify(directory), `\n  filename`, JSON.stringify(filename), `\n  sep`, JSON.stringify(sep) )
 
 	// condense any beginning seps
-	let rooted = false
+	let absolute = false
 	while( directory.startsWith(sep) ) {
-		rooted = true
+		absolute = true
 		directory = directory.slice(1)
 	}
+	DEBUG_LOG && console.log(`absolute`, JSON.stringify(absolute))
 
 	// remove trailing seps
 	let trailed = false
@@ -67,11 +64,12 @@ module.exports = function parseDFS( directory, filename, sep ) {
 		trailed = true
 		directory = directory.slice(0, -1)
 	}
-
-	DEBUG_LOG && console.log(`rooted`, JSON.stringify(rooted))
 	DEBUG_LOG && console.log(`trailed`, JSON.stringify(trailed))
 
-	if( rooted ) directory = sep + directory
+	let folders = directory.includes(sep)
+		? directory.split(sep)
+		: []
+	DEBUG_LOG && console.log(`folders`, JSON.stringify(folders))
 
 	/*
 		If filename wasn't provided, AND directory doesn't end with a sep,
@@ -79,23 +77,21 @@ module.exports = function parseDFS( directory, filename, sep ) {
 		then treat final seg as the filename.
 	*/
 	if( !filename && !trailed ) {
-		DEBUG_LOG && console.log(`checking final segment for extension...`)
-		let lastDotIdx = directory.lastIndexOf(dot)
-		let lastSepIdx = directory.lastIndexOf(sep)
-		DEBUG_LOG && console.log(`lastDotIdx`, JSON.stringify(lastDotIdx))
-		DEBUG_LOG && console.log(`lastSepIdx`, JSON.stringify(lastSepIdx))
-
-		let finalSegmentHasExt = lastDotIdx > lastSepIdx && lastDotIdx < directory.length - 1
+		DEBUG_LOG && console.log(`considering whether final segment is filename`)
+		let finalSegmentHasExt = folders.length && folders[folders.length-1].includes(dot)
 
 		if( finalSegmentHasExt ) {
-			filename = directory.slice(lastSepIdx + 1)
-			directory = directory.slice(0, lastSepIdx)
+			DEBUG_LOG && console.log(`treating final segment as the filename`)
+			filename = folders.pop()
+			DEBUG_LOG && console.log(`folders`, JSON.stringify(folders))
+			DEBUG_LOG && console.log(`filename`, JSON.stringify(filename))
 		}
 	}
 
 	return {
-		directory,
-		filename,
-		sep
+		sep,
+		absolute,
+		folders,
+		filename
 	}
 }
