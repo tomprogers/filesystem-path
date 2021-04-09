@@ -1,30 +1,60 @@
 const getPath = require('./get-path')
 
 
-describe(`getPath( directory, filename, sep )`, () => {
+describe(`getPath( absolute, folders, filename, sep )`, () => {
 
 	it(`handles directory + filename`, () => {
-		expect(getPath('/path/to', 'some.fil', '/')).toBe('/path/to/some.fil')
+		expect(getPath(
+			true,
+			['path', 'to'],
+			'some.fil',
+			'/'
+		)).toBe('/path/to/some.fil')
 	})
 
 	it(`handles just directory`, () => {
-		expect(getPath('/path/to', '', '/')).toBe('/path/to')
+		expect(getPath(
+			true,
+			['path', 'to'],
+			'',
+			'/'
+		)).toBe('/path/to')
 	})
 
 	it(`handles just filename`, () => {
-		expect(getPath('', 'some.fil', '/')).toBe('some.fil')
+		expect(getPath(
+			false,
+			[],
+			'some.fil',
+			'/'
+		)).toBe('some.fil')
 	})
 
 	it(`handles root`, () => {
-		expect(getPath('/', '', '/')).toBe('/')
+		expect(getPath(
+			true,
+			[],
+			'',
+			'/'
+		)).toBe('/')
 	})
 
 	it(`handles rooted files /laptop.md`, () => {
-		expect(getPath('/', 'laptop.md', '/')).toBe('/laptop.md')
+		expect(getPath(
+			true,
+			[],
+			'laptop.md',
+			'/'
+		)).toBe('/laptop.md')
 	})
 
 	it(`handles rooted directories /etc`, () => {
-		expect(getPath('/etc', '', '/')).toBe('/etc')
+		expect(getPath(
+			true,
+			['etc'],
+			'',
+			'/'
+		)).toBe('/etc')
 	})
 
 })
