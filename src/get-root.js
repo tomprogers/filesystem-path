@@ -1,3 +1,3 @@
-module.exports = function getRoot( directory, filename, sep ) {
-	return directory.charAt(0) === sep ? sep : ''
+module.exports = function getRoot( absolute, folders, filename, sep ) {
+	return absolute ? sep : ''
 }
