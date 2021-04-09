@@ -1,8 +1,5 @@
-const getFolders = require('./get-folders')
-
-
-module.exports = function getSegments( directory, filename, sep ) {
-	let segments = getFolders(directory, filename, sep)
+module.exports = function getSegments( absolute, folders, filename, sep ) {
+	let segments = folders.slice()
 	if( filename ) segments.push(filename)
 
 	return segments
