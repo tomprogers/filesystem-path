@@ -7,7 +7,8 @@ describe(`setFilename( directory, filename, sep, newFilename`, () => {
 		expect(
 			setFilename('/Users/tomprogers/projects/filesystem-path', 'README.md', '/', 'readme.txt')
 		).toEqual({
-			directory: '/Users/tomprogers/projects/filesystem-path',
+			absolute: true,
+			folders: [ 'Users', 'tomprogers', 'projects', 'filesystem-path' ],
 			filename: 'readme.txt',
 			sep: '/'
 		})
@@ -15,7 +16,8 @@ describe(`setFilename( directory, filename, sep, newFilename`, () => {
 		expect(
 			setFilename('\\Documents and Settings\\tomprogers\\projects\\filesystem-path', 'README.md', '\\', 'readme.txt')
 		).toEqual({
-			directory: '\\Documents and Settings\\tomprogers\\projects\\filesystem-path',
+			absolute: true,
+			folders: [ 'Documents and Settings', 'tomprogers', 'projects', 'filesystem-path' ],
 			filename: 'readme.txt',
 			sep: '\\'
 		})
@@ -26,7 +28,8 @@ describe(`setFilename( directory, filename, sep, newFilename`, () => {
 		expect(
 			setFilename('/Users/tomprogers', 'noext', '/', 'renamed.fil')
 		).toEqual({
-			directory: '/Users/tomprogers',
+			absolute: true,
+			folders: [ 'Users', 'tomprogers' ],
 			filename: 'renamed.fil',
 			sep: '/'
 		})
@@ -34,7 +37,8 @@ describe(`setFilename( directory, filename, sep, newFilename`, () => {
 		expect(
 			setFilename('\\Documents and Settings\\tomprogers', 'noext', '\\', 'renamed.fil')
 		).toEqual({
-			directory: '\\Documents and Settings\\tomprogers',
+			absolute: true,
+			folders: [ 'Documents and Settings', 'tomprogers' ],
 			filename: 'renamed.fil',
 			sep: '\\'
 		})
@@ -45,7 +49,8 @@ describe(`setFilename( directory, filename, sep, newFilename`, () => {
 		expect(
 			setFilename('/Users/tomprogers/projects/filesystem-path', '.babelrc', '/', 'renamed.fil')
 		).toEqual({
-			directory: '/Users/tomprogers/projects/filesystem-path',
+			absolute: true,
+			folders: [ 'Users', 'tomprogers', 'projects', 'filesystem-path' ],
 			filename: 'renamed.fil',
 			sep: '/'
 		})
@@ -53,7 +58,8 @@ describe(`setFilename( directory, filename, sep, newFilename`, () => {
 		expect(
 			setFilename('\\Documents and Settings\\tomprogers\\projects\\filesystem-path', '.babelrc', '\\', 'renamed.fil')
 		).toEqual({
-			directory: '\\Documents and Settings\\tomprogers\\projects\\filesystem-path',
+			absolute: true,
+			folders: [ 'Documents and Settings', 'tomprogers', 'projects', 'filesystem-path' ],
 			filename: 'renamed.fil',
 			sep: '\\'
 		})
@@ -64,7 +70,8 @@ describe(`setFilename( directory, filename, sep, newFilename`, () => {
 		expect(
 			setFilename('/Users/tomprogers', '', '/', 'some.fil')
 		).toEqual({
-			directory: '/Users/tomprogers',
+			absolute: true,
+			folders: [ 'Users', 'tomprogers' ],
 			filename: 'some.fil',
 			sep: '/'
 		})
@@ -72,7 +79,8 @@ describe(`setFilename( directory, filename, sep, newFilename`, () => {
 		expect(
 			setFilename('\\Documents and Settings\\tomprogers', '', '\\', 'some.fil')
 		).toEqual({
-			directory: '\\Documents and Settings\\tomprogers',
+			absolute: true,
+			folders: [ 'Documents and Settings', 'tomprogers' ],
 			filename: 'some.fil',
 			sep: '\\'
 		})
@@ -83,7 +91,8 @@ describe(`setFilename( directory, filename, sep, newFilename`, () => {
 		expect(
 			setFilename('/Users/tomprogers', 'original.fil', '/', '')
 		).toEqual({
-			directory: '/Users/tomprogers',
+			absolute: true,
+			folders: [ 'Users', 'tomprogers' ],
 			filename: '',
 			sep: '/'
 		})
@@ -91,7 +100,8 @@ describe(`setFilename( directory, filename, sep, newFilename`, () => {
 		expect(
 			setFilename('\\Documents and Settings\\tomprogers', 'original.fil', '\\', '')
 		).toEqual({
-			directory: '\\Documents and Settings\\tomprogers',
+			absolute: true,
+			folders: [ 'Documents and Settings', 'tomprogers' ],
 			filename: '',
 			sep: '\\'
 		})
@@ -102,7 +112,8 @@ describe(`setFilename( directory, filename, sep, newFilename`, () => {
 		expect(
 			setFilename('', 'before.fil1', '/', 'after.fil2')
 		).toEqual({
-			directory: '',
+			absolute: false,
+			folders: [],
 			filename: 'after.fil2',
 			sep: '/'
 		})
@@ -110,7 +121,8 @@ describe(`setFilename( directory, filename, sep, newFilename`, () => {
 		expect(
 			setFilename('', 'before.fil1', '\\', 'after.fil2')
 		).toEqual({
-			directory: '',
+			absolute: false,
+			folders: [],
 			filename: 'after.fil2',
 			sep: '\\'
 		})
@@ -121,7 +133,8 @@ describe(`setFilename( directory, filename, sep, newFilename`, () => {
 		expect(
 			setFilename('', '', '/', 'first.fil')
 		).toEqual({
-			directory: '',
+			absolute: false,
+			folders: [],
 			filename: 'first.fil',
 			sep: '/'
 		})
@@ -129,7 +142,8 @@ describe(`setFilename( directory, filename, sep, newFilename`, () => {
 		expect(
 			setFilename('', '', '\\', 'first.fil')
 		).toEqual({
-			directory: '',
+			absolute: false,
+			folders: [],
 			filename: 'first.fil',
 			sep: '\\'
 		})
