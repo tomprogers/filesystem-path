@@ -1,25 +1,31 @@
 const setFolders = require('./set-folders')
 
 
-describe(`setFolder( directory, filename, sep, newFolder`, () => {
+describe(`setFolder( absolute, folders, filename, sep, newFolders`, () => {
 
 	it(`replaces all folders`, () => {
-		expect(
-			setFolders(
-				'/Users/tomprogers/projects/filesystem-path', 'README.md', '/',
-				['usr', 'tpr', 'repos', 'fsp']
+		expect(setFolders(
+			true,
+			[ 'Users', 'tomprogers', 'projects', 'filesystem-path' ],
+			'README.md',
+			'/',
+			['usr', 'tpr', 'repos', 'fsp']
 		)).toEqual({
-			directory: '/usr/tpr/repos/fsp',
+			absolute: true,
+			folders: ['usr', 'tpr', 'repos', 'fsp'],
 			filename: 'README.md',
 			sep: '/'
 		})
 
-		expect(
-			setFolders(
-				'\\Documents and Settings\\tomprogers\\projects\\filesystem-path', 'README.md', '\\',
-				['Users', 'tpr', 'repos', 'fsp']
+		expect(setFolders(
+			true,
+			[ 'Documents and Settings', 'tomprogers', 'projects', 'filesystem-path' ],
+			'README.md',
+			'\\',
+			['Users', 'tpr', 'repos', 'fsp']
 		)).toEqual({
-			directory: '\\Users\\tpr\\repos\\fsp',
+			absolute: true,
+			folders: ['Users', 'tpr', 'repos', 'fsp'],
 			filename: 'README.md',
 			sep: '\\'
 		})
@@ -27,22 +33,28 @@ describe(`setFolder( directory, filename, sep, newFolder`, () => {
 
 
 	it(`can remove all folders`, () => {
-		expect(
-			setFolders(
-				'/Users/tomprogers/projects/filesystem-path', 'README.md', '/',
-				[]
+		expect(setFolders(
+			true,
+			[ 'Users', 'tomprogers', 'projects', 'filesystem-path' ],
+			'README.md',
+			'/',
+			[]
 		)).toEqual({
-			directory: '/',
+			absolute: true,
+			folders: [],
 			filename: 'README.md',
 			sep: '/'
 		})
 
-		expect(
-			setFolders(
-				'\\Documents and Settings\\tomprogers\\projects\\filesystem-path', 'README.md', '\\',
-				[]
+		expect(setFolders(
+			true,
+			[ 'Documents and Settings', 'tomprogers', 'projects', 'filesystem-path' ],
+			'README.md',
+			'\\',
+			[]
 		)).toEqual({
-			directory: '\\',
+			absolute: true,
+			folders: [],
 			filename: 'README.md',
 			sep: '\\'
 		})
@@ -50,22 +62,28 @@ describe(`setFolder( directory, filename, sep, newFolder`, () => {
 
 
 	it(`can add directories`, () => {
-		expect(
-			setFolders(
-				'/', 'README.md', '/',
-				['Users', 'tomprogers', 'projects', 'filesystem-path']
+		expect(setFolders(
+			true,
+			[],
+			'README.md',
+			'/',
+			['Users', 'tomprogers', 'projects', 'filesystem-path']
 		)).toEqual({
-			directory: '/Users/tomprogers/projects/filesystem-path',
+			absolute: true,
+			folders: ['Users', 'tomprogers', 'projects', 'filesystem-path'],
 			filename: 'README.md',
 			sep: '/'
 		})
 
-		expect(
-			setFolders(
-				'\\', 'README.md', '\\',
-				['Documents and Settings', 'tomprogers', 'projects', 'filesystem-path']
+		expect(setFolders(
+			true,
+			[],
+			'README.md',
+			'\\',
+			['Documents and Settings', 'tomprogers', 'projects', 'filesystem-path']
 		)).toEqual({
-			directory: '\\Documents and Settings\\tomprogers\\projects\\filesystem-path',
+			absolute: true,
+			folders: ['Documents and Settings', 'tomprogers', 'projects', 'filesystem-path'],
 			filename: 'README.md',
 			sep: '\\'
 		})
@@ -73,22 +91,28 @@ describe(`setFolder( directory, filename, sep, newFolder`, () => {
 
 
 	it(`cannot change the root`, () => {
-		expect(
-			setFolders(
-				'', 'file.ext', '/',
-				['path']
+		expect(setFolders(
+			false,
+			[],
+			'file.ext',
+			'/',
+			['path']
 		)).toEqual({
-			directory: 'path',
+			absolute: false,
+			folders: ['path'],
 			filename: 'file.ext',
 			sep: '/'
 		})
 
-		expect(
-			setFolders(
-				'/', 'file.ext', '/',
-				['path']
+		expect(setFolders(
+			false,
+			[],
+			'file.ext',
+			'/',
+			['path']
 		)).toEqual({
-			directory: '/path',
+			absolute: false,
+			folders: ['path'],
 			filename: 'file.ext',
 			sep: '/'
 		})
@@ -96,26 +120,29 @@ describe(`setFolder( directory, filename, sep, newFolder`, () => {
 
 
 	it(`cannot change the filename`, () => {
-		expect(
-			setFolders(
-				'/path', 'README.md', '/',
-				['path','readme.markdown']
+		expect(setFolders(
+			true,
+			['path'],
+			'README.md',
+			'/',
+			['path','readme.markdown']
 		)).toEqual({
-			directory: '/path/readme.markdown',
+			absolute: true,
+			folders: ['path','readme.markdown'],
 			filename: 'README.md',
 			sep: '/'
 		})
 	})
 
 
-	xit(`throws TypeError if newSegments is not an array of strings`, () => {
+	it(`throws TypeError if newSegments is not an array of strings`, () => {
 		expect(() => {
-			setFolders('', '', '/', 5)
+			setFolders(true, [], '', '/', 5)
 		}).toThrow(
 			TypeError
 		)
 		expect(() => {
-			setFolders('', '', '/', ['', 5])
+			setFolders(true, [], '', '/', ['', 5])
 		}).toThrow(
 			TypeError
 		)
