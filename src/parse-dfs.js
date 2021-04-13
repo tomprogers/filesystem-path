@@ -66,7 +66,7 @@ module.exports = function parseDFS( directory, filename, sep ) {
 	}
 	DEBUG_LOG && console.log(`trailed`, JSON.stringify(trailed))
 
-	let folders = directory.includes(sep)
+	let folders = directory.includes(sep) || absolute || trailed
 		? directory.split(sep)
 		: []
 	DEBUG_LOG && console.log(`folders`, JSON.stringify(folders))
