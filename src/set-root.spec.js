@@ -1,72 +1,112 @@
 const setRoot = require('./set-root')
 
 
-describe(`setRoot( directory, filename, sep, newRoot )`, () => {
+describe(`setRoot( absolute, folders, filename, sep, newRoot )`, () => {
 
 	it(`removes root if newRoot is false`, () => {
-		expect(
-			setRoot('/Users/tomprogers/projects/filesystem-path', 'README.md', '/', false)
-		).toEqual({
-			directory: 'Users/tomprogers/projects/filesystem-path',
+		expect(setRoot(
+			true,
+			['Users','tomprogers','projects','filesystem-path'],
+			'README.md',
+			'/',
+			false
+		)).toEqual({
+			absolute: false,
+			folders: ['Users','tomprogers','projects','filesystem-path'],
 			filename: 'README.md',
 			sep: '/'
 		})
 
-		expect(
-			setRoot('Users/tomprogers/projects/filesystem-path', 'README.md', '/', false)
-		).toEqual({
-			directory: 'Users/tomprogers/projects/filesystem-path',
+		expect(setRoot(
+			false,
+			['Users','tomprogers','projects','filesystem-path'],
+			'README.md',
+			'/',
+			false
+		)).toEqual({
+			absolute: false,
+			folders: ['Users','tomprogers','projects','filesystem-path'],
 			filename: 'README.md',
 			sep: '/'
 		})
 
-		expect(
-			setRoot('\\Documents and Settings\\tomprogers\\projects\\filesystem-path', 'README.md', '\\', false)
-		).toEqual({
-			directory: 'Documents and Settings\\tomprogers\\projects\\filesystem-path',
+		expect(setRoot(
+			true,
+			['Documents and Settings','tomprogers','projects','filesystem-path'],
+			'README.md',
+			'\\',
+			false
+		)).toEqual({
+			absolute: false,
+			folders: ['Documents and Settings','tomprogers','projects','filesystem-path'],
 			filename: 'README.md',
 			sep: '\\'
 		})
 
-		expect(
-			setRoot('Documents and Settings\\tomprogers\\projects\\filesystem-path', 'README.md', '\\', false)
-		).toEqual({
-			directory: 'Documents and Settings\\tomprogers\\projects\\filesystem-path',
+		expect(setRoot(
+			false,
+			['Documents and Settings','tomprogers','projects','filesystem-path'],
+			'README.md',
+			'\\',
+			false
+		)).toEqual({
+			absolute: false,
+			folders: ['Documents and Settings','tomprogers','projects','filesystem-path'],
 			filename: 'README.md',
 			sep: '\\'
 		})
 	})
 
 
-	it(`removes root is newRoot is empty string`, () => {
-		expect(
-			setRoot('/Users/tomprogers/projects/filesystem-path', 'README.md', '/', '')
-		).toEqual({
-			directory: 'Users/tomprogers/projects/filesystem-path',
+	it(`removes root if newRoot is empty string`, () => {
+		expect(setRoot(
+			true,
+			['Users','tomprogers','projects','filesystem-path'],
+			'README.md',
+			'/',
+			''
+		)).toEqual({
+			absolute: false,
+			folders: ['Users','tomprogers','projects','filesystem-path'],
 			filename: 'README.md',
 			sep: '/'
 		})
 
-		expect(
-			setRoot('Users/tomprogers/projects/filesystem-path', 'README.md', '/', '')
-		).toEqual({
-			directory: 'Users/tomprogers/projects/filesystem-path',
+		expect(setRoot(
+			false,
+			['Users','tomprogers','projects','filesystem-path'],
+			'README.md',
+			'/',
+			''
+		)).toEqual({
+			absolute: false,
+			folders: ['Users','tomprogers','projects','filesystem-path'],
 			filename: 'README.md',
 			sep: '/'
 		})
 
-		expect(
-			setRoot('\\Documents and Settings\\tomprogers\\projects\\filesystem-path', 'README.md', '\\', '')
-		).toEqual({
-			directory: 'Documents and Settings\\tomprogers\\projects\\filesystem-path',
+		expect(setRoot(
+			true,
+			['Documents and Settings','tomprogers','projects','filesystem-path'],
+			'README.md',
+			'\\',
+			''
+		)).toEqual({
+			absolute: false,
+			folders: ['Documents and Settings','tomprogers','projects','filesystem-path'],
 			filename: 'README.md',
 			sep: '\\'
 		})
 
-		expect(
-			setRoot('Documents and Settings\\tomprogers\\projects\\filesystem-path', 'README.md', '\\', '')
-		).toEqual({
-			directory: 'Documents and Settings\\tomprogers\\projects\\filesystem-path',
+		expect(setRoot(
+			false,
+			['Documents and Settings','tomprogers','projects','filesystem-path'],
+			'README.md',
+			'\\',
+			''
+		)).toEqual({
+			absolute: false,
+			folders: ['Documents and Settings','tomprogers','projects','filesystem-path'],
 			filename: 'README.md',
 			sep: '\\'
 		})
@@ -74,34 +114,54 @@ describe(`setRoot( directory, filename, sep, newRoot )`, () => {
 
 
 	it(`adds root if newRoot is true`, () => {
-		expect(
-			setRoot('Users/tomprogers/projects/filesystem-path', 'README.md', '/', true)
-		).toEqual({
-			directory: '/Users/tomprogers/projects/filesystem-path',
+		expect(setRoot(
+			false,
+			['Users','tomprogers','projects','filesystem-path'],
+			'README.md',
+			'/',
+			true
+		)).toEqual({
+			absolute: true,
+			folders: ['Users','tomprogers','projects','filesystem-path'],
 			filename: 'README.md',
 			sep: '/'
 		})
 
-		expect(
-			setRoot('/Users/tomprogers/projects/filesystem-path', 'README.md', '/', true)
-		).toEqual({
-			directory: '/Users/tomprogers/projects/filesystem-path',
+		expect(setRoot(
+			true,
+			['Users','tomprogers','projects','filesystem-path'],
+			'README.md',
+			'/',
+			true
+		)).toEqual({
+			absolute: true,
+			folders: ['Users','tomprogers','projects','filesystem-path'],
 			filename: 'README.md',
 			sep: '/'
 		})
 
-		expect(
-			setRoot('Documents and Settings\\tomprogers\\projects\\filesystem-path', 'README.md', '\\', true)
-		).toEqual({
-			directory: '\\Documents and Settings\\tomprogers\\projects\\filesystem-path',
+		expect(setRoot(
+			false,
+			['Documents and Settings','tomprogers','projects','filesystem-path'],
+			'README.md',
+			'\\',
+			true
+		)).toEqual({
+			absolute: true,
+			folders: ['Documents and Settings','tomprogers','projects','filesystem-path'],
 			filename: 'README.md',
 			sep: '\\'
 		})
 
-		expect(
-			setRoot('\\Documents and Settings\\tomprogers\\projects\\filesystem-path', 'README.md', '\\', true)
-		).toEqual({
-			directory: '\\Documents and Settings\\tomprogers\\projects\\filesystem-path',
+		expect(setRoot(
+			true,
+			['Documents and Settings','tomprogers','projects','filesystem-path'],
+			'README.md',
+			'\\',
+			true
+		)).toEqual({
+			absolute: true,
+			folders: ['Documents and Settings','tomprogers','projects','filesystem-path'],
 			filename: 'README.md',
 			sep: '\\'
 		})
@@ -109,34 +169,54 @@ describe(`setRoot( directory, filename, sep, newRoot )`, () => {
 
 
 	it(`adds root if newRoot is sep`, () => {
-		expect(
-			setRoot('Users/tomprogers/projects/filesystem-path', 'README.md', '/', '/')
-		).toEqual({
-			directory: '/Users/tomprogers/projects/filesystem-path',
+		expect(setRoot(
+			false,
+			['Users','tomprogers','projects','filesystem-path'],
+			'README.md',
+			'/',
+			'/'
+		)).toEqual({
+			absolute: true,
+			folders: ['Users','tomprogers','projects','filesystem-path'],
 			filename: 'README.md',
 			sep: '/'
 		})
 
-		expect(
-			setRoot('/Users/tomprogers/projects/filesystem-path', 'README.md', '/', '/')
-		).toEqual({
-			directory: '/Users/tomprogers/projects/filesystem-path',
+		expect(setRoot(
+			true,
+			['Users','tomprogers','projects','filesystem-path'],
+			'README.md',
+			'/',
+			'/'
+		)).toEqual({
+			absolute: true,
+			folders: ['Users','tomprogers','projects','filesystem-path'],
 			filename: 'README.md',
 			sep: '/'
 		})
 
-		expect(
-			setRoot('Documents and Settings\\tomprogers\\projects\\filesystem-path', 'README.md', '\\', '\\')
-		).toEqual({
-			directory: '\\Documents and Settings\\tomprogers\\projects\\filesystem-path',
+		expect(setRoot(
+			false,
+			['Documents and Settings','tomprogers','projects','filesystem-path'],
+			'README.md',
+			'\\',
+			'\\'
+		)).toEqual({
+			absolute: true,
+			folders: ['Documents and Settings','tomprogers','projects','filesystem-path'],
 			filename: 'README.md',
 			sep: '\\'
 		})
 
-		expect(
-			setRoot('\\Documents and Settings\\tomprogers\\projects\\filesystem-path', 'README.md', '\\', '\\')
-		).toEqual({
-			directory: '\\Documents and Settings\\tomprogers\\projects\\filesystem-path',
+		expect(setRoot(
+			true,
+			['Documents and Settings','tomprogers','projects','filesystem-path'],
+			'README.md',
+			'\\',
+			'\\'
+		)).toEqual({
+			absolute: true,
+			folders: ['Documents and Settings','tomprogers','projects','filesystem-path'],
 			filename: 'README.md',
 			sep: '\\'
 		})
@@ -144,30 +224,46 @@ describe(`setRoot( directory, filename, sep, newRoot )`, () => {
 
 
 	it(`throws RangeError if newRoot is not one of the four acceptable values`, () => {
-		expect(() => {
-			setRoot('Users/tomprogers/projects/filesystem-path', 'README.md', '/', 'true')
-		}).toThrow(
+		expect(() => setRoot(
+			true,
+			['Users','tomprogers','projects','filesystem-path'],
+			'README.md',
+			'/',
+			'true'
+		)).toThrow(
 			RangeError
 		)
 
-		expect(() => {
-			setRoot('\\Documents and Settings\\tomprogers\\projects\\filesystem-path', 'README.md', '\\', 'C:')
-		}).toThrow(
+		expect(() => setRoot(
+			true,
+			['Documents and Settings','tomprogers','projects','filesystem-path'],
+			'README.md',
+			'\\',
+			'C:'
+		)).toThrow(
 			RangeError
 		)
 	})
 
 
 	it(`throws RangeError if newRoot is a mismatched sep`, () => {
-		expect(() => {
-			setRoot('Users/tomprogers/projects/filesystem-path', 'README.md', '/', '\\')
-		}).toThrow(
+		expect(() => setRoot(
+			false,
+			['Users','tomprogers','projects','filesystem-path'],
+			'README.md',
+			'/',
+			'\\'
+		)).toThrow(
 			RangeError
 		)
 
-		expect(() => {
-			setRoot('\\Documents and Settings\\tomprogers\\projects\\filesystem-path', 'README.md', '\\', '/')
-		}).toThrow(
+		expect(() => setRoot(
+			false,
+			['Documents and Settings','tomprogers','projects','filesystem-path'],
+			'README.md',
+			'\\',
+			'/'
+		)).toThrow(
 			RangeError
 		)
 	})
