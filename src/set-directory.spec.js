@@ -1,37 +1,57 @@
 const setDirectory = require('./set-directory')
 
 
-describe(`setDirectory( directory, filename, sep, newDirectory`, () => {
+describe(`setDirectory(absolute, folders, filename, sep, newDirectory`, () => {
 
 	it(`replaces the current directory`, () => {
-		expect(
-			setDirectory( '/alpha/to', 'some.fil', '/', '/beta/to')
-		).toEqual({
-			directory: '/beta/to',
+		expect(setDirectory(
+			true,
+			['alpha', 'to'],
+			'some.fil',
+			'/',
+			'/beta/to'
+		)).toEqual({
+			absolute: true,
+			folders: [ 'beta', 'to' ],
 			filename: 'some.fil',
 			sep: '/'
 		})
 
-		expect(
-			setDirectory( '/alpha/to', 'some.fil', '/', '')
-		).toEqual({
-			directory: '',
+		expect(setDirectory(
+			true,
+			['alpha', 'to'],
+			'some.fil',
+			'/',
+			''
+		)).toEqual({
+			absolute: false,
+			folders: [],
 			filename: 'some.fil',
 			sep: '/'
 		})
 
-		expect(
-			setDirectory( '\\alpha\\to', 'some.fil', '\\', '\\beta\\to')
-		).toEqual({
-			directory: '\\beta\\to',
+		expect(setDirectory(
+			true,
+			['alpha', 'to'],
+			'some.fil',
+			'\\',
+			'\\beta\\to'
+		)).toEqual({
+			absolute: true,
+			folders: [ 'beta', 'to' ],
 			filename: 'some.fil',
 			sep: '\\'
 		})
 
-		expect(
-			setDirectory( '\\alpha\\to', 'some.fil', '\\', '')
-		).toEqual({
-			directory: '',
+		expect(setDirectory(
+			true,
+			['alpha', 'to'],
+			'some.fil',
+			'\\',
+			''
+		)).toEqual({
+			absolute: false,
+			folders: [],
 			filename: 'some.fil',
 			sep: '\\'
 		})
@@ -39,18 +59,28 @@ describe(`setDirectory( directory, filename, sep, newDirectory`, () => {
 
 
 	it(`works against paths with no directory`, () => {
-		expect(
-			setDirectory( '', 'some.fil', '/', '/alpha/to')
-		).toEqual({
-			directory: '/alpha/to',
+		expect(setDirectory(
+			true,
+			[],
+			'some.fil',
+			'/',
+			'/alpha/to'
+		)).toEqual({
+			absolute: true,
+			folders: ['alpha', 'to'],
 			filename: 'some.fil',
 			sep: '/'
 		})
 
-		expect(
-			setDirectory( '', 'some.fil', '\\', '\\alpha\\to')
-		).toEqual({
-			directory: '\\alpha\\to',
+		expect(setDirectory(
+			true,
+			[],
+			'some.fil',
+			'\\',
+			'\\alpha\\to'
+		)).toEqual({
+			absolute: true,
+			folders: ['alpha', 'to'],
 			filename: 'some.fil',
 			sep: '\\'
 		})
@@ -58,34 +88,54 @@ describe(`setDirectory( directory, filename, sep, newDirectory`, () => {
 
 
 	it(`works against rooted and unrooted paths`, () => {
-		expect(
-			setDirectory( '/alpha/to', 'some.fil', '/', 'beta/to')
-		).toEqual({
-			directory: 'beta/to',
+		expect(setDirectory(
+			true,
+			['alpha', 'to'],
+			'some.fil',
+			'/',
+			'beta/to'
+		)).toEqual({
+			absolute: false,
+			folders: [ 'beta', 'to' ],
 			filename: 'some.fil',
 			sep: '/'
 		})
 
-		expect(
-			setDirectory( 'alpha/to', 'some.fil', '/', '/beta/to')
-		).toEqual({
-			directory: '/beta/to',
+		expect(setDirectory(
+			false,
+			['alpha', 'to'],
+			'some.fil',
+			'/',
+			'/beta/to'
+		)).toEqual({
+			absolute: true,
+			folders: [ 'beta', 'to' ],
 			filename: 'some.fil',
 			sep: '/'
 		})
 
-		expect(
-			setDirectory( '\\alpha\\to', 'some.fil', '\\', 'beta\\to')
-		).toEqual({
-			directory: 'beta\\to',
+		expect(setDirectory(
+			true,
+			['alpha', 'to'],
+			'some.fil',
+			'\\',
+			'beta\\to'
+		)).toEqual({
+			absolute: false,
+			folders: [ 'beta', 'to' ],
 			filename: 'some.fil',
 			sep: '\\'
 		})
 
-		expect(
-			setDirectory( 'alpha\\to', 'some.fil', '\\', '\\beta\\to')
-		).toEqual({
-			directory: '\\beta\\to',
+		expect(setDirectory(
+			false,
+			['alpha', 'to'],
+			'some.fil',
+			'\\',
+			'\\beta\\to'
+		)).toEqual({
+			absolute: true,
+			folders: [ 'beta', 'to' ],
 			filename: 'some.fil',
 			sep: '\\'
 		})
@@ -93,18 +143,28 @@ describe(`setDirectory( directory, filename, sep, newDirectory`, () => {
 
 
 	it(`works against paths with no filename`, () => {
-		expect(
-			setDirectory( '/alpha/to', '', '/', '/beta/to')
-		).toEqual({
-			directory: '/beta/to',
+		expect(setDirectory(
+			true,
+			['alpha', 'to'],
+			'',
+			'/',
+			'/beta/to'
+		)).toEqual({
+			absolute: true,
+			folders: [ 'beta', 'to' ],
 			filename: '',
 			sep: '/'
 		})
 
-		expect(
-			setDirectory( '\\alpha\\to', '', '\\', '\\beta\\to')
-		).toEqual({
-			directory: '\\beta\\to',
+		expect(setDirectory(
+			true,
+			['alpha', 'to'],
+			'',
+			'\\',
+			'\\beta\\to'
+		)).toEqual({
+			absolute: true,
+			folders: [ 'beta', 'to' ],
 			filename: '',
 			sep: '\\'
 		})
@@ -112,24 +172,36 @@ describe(`setDirectory( directory, filename, sep, newDirectory`, () => {
 
 
 	it(`throws TypeError if newDirectory not a string`, () => {
-		expect(() => {
-			setDirectory('', '', '/', 5)
-		}).toThrow(
+		expect(() => setDirectory(
+			true,
+			[],
+			'',
+			'/',
+			5
+		)).toThrow(
 			TypeError
 		)
 	})
 
 
 	it(`throws SyntaxError if new directory uses wrong sep`, () => {
-		expect(() => {
-			setDirectory('', '', '/', '\\windows')
-		}).toThrow(
+		expect(() => setDirectory(
+			true,
+			[],
+			'',
+			'/',
+			'\\windows'
+		)).toThrow(
 			SyntaxError
 		)
 
-		expect(() => {
-			setDirectory('', '', '\\', '/nix')
-		}).toThrow(
+		expect(() => setDirectory(
+			true,
+			[],
+			'',
+			'\\',
+			'/nix'
+		)).toThrow(
 			SyntaxError
 		)
 	})

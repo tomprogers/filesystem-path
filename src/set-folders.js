@@ -1,14 +1,15 @@
-const getRoot = require('./get-root')
 const parseDFS = require('./parse-dfs')
 
 
-module.exports = function setFolders( directory, filename, sep, newFolders ) {
+module.exports = function setFolders( absolute, folders, filename, sep, newFolders ) {
 	if( !Array.isArray(newFolders) || newFolders.some(fld => typeof fld !== 'string') )
 		throw new TypeError('newFolders must be an array of strings')
 
-	let newDirectory = getRoot(directory, filename, sep)
-	for( let fld of newFolders )
-		newDirectory += fld + sep // always add trailing sep so parser doesn't have to guess
+	let newDirectory = newFolders.join(sep)
+	if( absolute ) newDirectory = sep + newDirectory
+
+	// always add trailing slash so parser doesn't have to guess
+	if( newDirectory && !newDirectory.endsWith(sep) ) newDirectory += sep
 
 	return parseDFS(
 		newDirectory,

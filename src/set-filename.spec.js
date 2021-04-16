@@ -4,18 +4,28 @@ const setFilename = require('./set-filename')
 describe(`setFilename( directory, filename, sep, newFilename`, () => {
 
 	it(`renames files that have both basename and ext`, () => {
-		expect(
-			setFilename('/Users/tomprogers/projects/filesystem-path', 'README.md', '/', 'readme.txt')
-		).toEqual({
-			directory: '/Users/tomprogers/projects/filesystem-path',
+		expect(setFilename(
+			true,
+			[ 'Users', 'tomprogers', 'projects', 'filesystem-path' ],
+			'README.md',
+			'/',
+			'readme.txt'
+		)).toEqual({
+			absolute: true,
+			folders: [ 'Users', 'tomprogers', 'projects', 'filesystem-path' ],
 			filename: 'readme.txt',
 			sep: '/'
 		})
 
-		expect(
-			setFilename('\\Documents and Settings\\tomprogers\\projects\\filesystem-path', 'README.md', '\\', 'readme.txt')
-		).toEqual({
-			directory: '\\Documents and Settings\\tomprogers\\projects\\filesystem-path',
+		expect(setFilename(
+			true,
+			[ 'Documents and Settings', 'tomprogers', 'projects', 'filesystem-path' ],
+			'README.md',
+			'\\',
+			'readme.txt'
+		)).toEqual({
+			absolute: true,
+			folders: [ 'Documents and Settings', 'tomprogers', 'projects', 'filesystem-path' ],
 			filename: 'readme.txt',
 			sep: '\\'
 		})
@@ -23,18 +33,28 @@ describe(`setFilename( directory, filename, sep, newFilename`, () => {
 
 
 	it(`renames files that only have basename`, () => {
-		expect(
-			setFilename('/Users/tomprogers', 'noext', '/', 'renamed.fil')
-		).toEqual({
-			directory: '/Users/tomprogers',
+		expect(setFilename(
+			true,
+			[ 'Users', 'tomprogers' ],
+			'noext',
+			'/',
+			'renamed.fil'
+		)).toEqual({
+			absolute: true,
+			folders: [ 'Users', 'tomprogers' ],
 			filename: 'renamed.fil',
 			sep: '/'
 		})
 
-		expect(
-			setFilename('\\Documents and Settings\\tomprogers', 'noext', '\\', 'renamed.fil')
-		).toEqual({
-			directory: '\\Documents and Settings\\tomprogers',
+		expect(setFilename(
+			true,
+			[ 'Documents and Settings', 'tomprogers' ],
+			'noext',
+			'\\',
+			'renamed.fil'
+		)).toEqual({
+			absolute: true,
+			folders: [ 'Documents and Settings', 'tomprogers' ],
 			filename: 'renamed.fil',
 			sep: '\\'
 		})
@@ -42,18 +62,28 @@ describe(`setFilename( directory, filename, sep, newFilename`, () => {
 
 
 	it(`renames files that only have ext`, () => {
-		expect(
-			setFilename('/Users/tomprogers/projects/filesystem-path', '.babelrc', '/', 'renamed.fil')
-		).toEqual({
-			directory: '/Users/tomprogers/projects/filesystem-path',
+		expect(setFilename(
+			true,
+			[ 'Users', 'tomprogers', 'projects', 'filesystem-path' ],
+			'README.md',
+			'/',
+			'renamed.fil'
+		)).toEqual({
+			absolute: true,
+			folders: [ 'Users', 'tomprogers', 'projects', 'filesystem-path' ],
 			filename: 'renamed.fil',
 			sep: '/'
 		})
 
-		expect(
-			setFilename('\\Documents and Settings\\tomprogers\\projects\\filesystem-path', '.babelrc', '\\', 'renamed.fil')
-		).toEqual({
-			directory: '\\Documents and Settings\\tomprogers\\projects\\filesystem-path',
+		expect(setFilename(
+			true,
+			[ 'Documents and Settings', 'tomprogers', 'projects', 'filesystem-path' ],
+			'.babelrc',
+			'\\',
+			'renamed.fil'
+		)).toEqual({
+			absolute: true,
+			folders: [ 'Documents and Settings', 'tomprogers', 'projects', 'filesystem-path' ],
 			filename: 'renamed.fil',
 			sep: '\\'
 		})
@@ -61,18 +91,28 @@ describe(`setFilename( directory, filename, sep, newFilename`, () => {
 
 
 	it(`adds a filename to paths with no filename`, () => {
-		expect(
-			setFilename('/Users/tomprogers', '', '/', 'some.fil')
-		).toEqual({
-			directory: '/Users/tomprogers',
+		expect(setFilename(
+			true,
+			[ 'Users', 'tomprogers' ],
+			'',
+			'/',
+			'some.fil'
+		)).toEqual({
+			absolute: true,
+			folders: [ 'Users', 'tomprogers' ],
 			filename: 'some.fil',
 			sep: '/'
 		})
 
-		expect(
-			setFilename('\\Documents and Settings\\tomprogers', '', '\\', 'some.fil')
-		).toEqual({
-			directory: '\\Documents and Settings\\tomprogers',
+		expect(setFilename(
+			true,
+			[ 'Documents and Settings', 'tomprogers' ],
+			'',
+			'\\',
+			'some.fil'
+		)).toEqual({
+			absolute: true,
+			folders: [ 'Documents and Settings', 'tomprogers' ],
 			filename: 'some.fil',
 			sep: '\\'
 		})
@@ -80,18 +120,28 @@ describe(`setFilename( directory, filename, sep, newFilename`, () => {
 
 
 	it(`removes filename if newFilename is the empty string`, () => {
-		expect(
-			setFilename('/Users/tomprogers', 'original.fil', '/', '')
-		).toEqual({
-			directory: '/Users/tomprogers',
+		expect(setFilename(
+			true,
+			[ 'Users', 'tomprogers' ],
+			'original.fil',
+			'/',
+			''
+		)).toEqual({
+			absolute: true,
+			folders: [ 'Users', 'tomprogers' ],
 			filename: '',
 			sep: '/'
 		})
 
-		expect(
-			setFilename('\\Documents and Settings\\tomprogers', 'original.fil', '\\', '')
-		).toEqual({
-			directory: '\\Documents and Settings\\tomprogers',
+		expect(setFilename(
+			true,
+			[ 'Documents and Settings', 'tomprogers' ],
+			'original.fil',
+			'\\',
+			''
+		)).toEqual({
+			absolute: true,
+			folders: [ 'Documents and Settings', 'tomprogers' ],
 			filename: '',
 			sep: '\\'
 		})
@@ -99,18 +149,28 @@ describe(`setFilename( directory, filename, sep, newFilename`, () => {
 
 
 	it(`renames files with empty directories`, () => {
-		expect(
-			setFilename('', 'before.fil1', '/', 'after.fil2')
-		).toEqual({
-			directory: '',
+		expect(setFilename(
+			false,
+			[],
+			'before.fil1',
+			'/',
+			'after.fil2'
+		)).toEqual({
+			absolute: false,
+			folders: [],
 			filename: 'after.fil2',
 			sep: '/'
 		})
 
-		expect(
-			setFilename('', 'before.fil1', '\\', 'after.fil2')
-		).toEqual({
-			directory: '',
+		expect(setFilename(
+			false,
+			[],
+			'before.fil1',
+			'\\',
+			'after.fil2'
+		)).toEqual({
+			absolute: false,
+			folders: [],
 			filename: 'after.fil2',
 			sep: '\\'
 		})
@@ -118,18 +178,28 @@ describe(`setFilename( directory, filename, sep, newFilename`, () => {
 
 
 	it(`adds a filename to empty paths`, () => {
-		expect(
-			setFilename('', '', '/', 'first.fil')
-		).toEqual({
-			directory: '',
+		expect(setFilename(
+			false,
+			[],
+			'',
+			'/',
+			'first.fil'
+		)).toEqual({
+			absolute: false,
+			folders: [],
 			filename: 'first.fil',
 			sep: '/'
 		})
 
-		expect(
-			setFilename('', '', '\\', 'first.fil')
-		).toEqual({
-			directory: '',
+		expect(setFilename(
+			false,
+			[],
+			'',
+			'\\',
+			'first.fil'
+		)).toEqual({
+			absolute: false,
+			folders: [],
 			filename: 'first.fil',
 			sep: '\\'
 		})
