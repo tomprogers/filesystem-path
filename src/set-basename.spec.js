@@ -1,21 +1,23 @@
 const setBasename = require('./set-basename')
 
 
-describe(`setBasename( directory, filename, sep, newBasename )`, () => {
+describe(`setBasename( absolute, folders, filename, sep, newBasename )`, () => {
 
 	it(`renames files that have both basename and ext`, () => {
 		expect(
-			setBasename('/Users/tomprogers/projects/filesystem-path', 'README.md', '/', 'READ-YOU')
+			setBasename(true, ['Users', 'tomprogers', 'projects', 'filesystem-path'], 'README.md', '/', 'READ-YOU')
 		).toEqual({
-			directory: '/Users/tomprogers/projects/filesystem-path',
+			absolute: true,
+			folders: ['Users', 'tomprogers', 'projects', 'filesystem-path'],
 			filename: 'READ-YOU.md',
 			sep: '/'
 		})
 
 		expect(
-			setBasename('\\Documents and Settings\\tomprogers\\projects\\filesystem-path', 'README.md', '\\', 'READ-YOU')
+			setBasename(true, ['Documents and Settings', 'tomprogers', 'projects', 'filesystem-path'], 'README.md', '\\', 'READ-YOU')
 		).toEqual({
-			directory: '\\Documents and Settings\\tomprogers\\projects\\filesystem-path',
+			absolute: true,
+			folders: ['Documents and Settings', 'tomprogers', 'projects', 'filesystem-path'],
 			filename: 'READ-YOU.md',
 			sep: '\\'
 		})
@@ -24,17 +26,19 @@ describe(`setBasename( directory, filename, sep, newBasename )`, () => {
 
 	it(`renames files that only have basename`, () => {
 		expect(
-			setBasename('/Users/tomprogers', 'noext', '/', 'new-noext')
+			setBasename(true, ['Users', 'tomprogers'], 'noext', '/', 'new-noext')
 		).toEqual({
-			directory: '/Users/tomprogers',
+			absolute: true,
+			folders: ['Users', 'tomprogers'],
 			filename: 'new-noext',
 			sep: '/'
 		})
 
 		expect(
-			setBasename('\\Documents and Settings\\tomprogers', 'noext', '\\', 'new-noext')
+			setBasename(true, ['Documents and Settings', 'tomprogers'], 'noext', '\\', 'new-noext')
 		).toEqual({
-			directory: '\\Documents and Settings\\tomprogers',
+			absolute: true,
+			folders: ['Documents and Settings', 'tomprogers'],
 			filename: 'new-noext',
 			sep: '\\'
 		})
@@ -43,17 +47,19 @@ describe(`setBasename( directory, filename, sep, newBasename )`, () => {
 
 	it(`renames files that only have ext`, () => {
 		expect(
-			setBasename('/Users/tomprogers/projects/filesystem-path', '.babelrc', '/', 'backup')
+			setBasename(true, ['Users', 'tomprogers', 'projects', 'filesystem-path'], '.babelrc', '/', 'backup')
 		).toEqual({
-			directory: '/Users/tomprogers/projects/filesystem-path',
+			absolute: true,
+			folders: ['Users', 'tomprogers', 'projects', 'filesystem-path'],
 			filename: 'backup.babelrc',
 			sep: '/'
 		})
 
 		expect(
-			setBasename('\\Documents and Settings\\tomprogers\\projects\\filesystem-path', '.babelrc', '\\', 'backup')
+			setBasename(true, ['Documents and Settings', 'tomprogers', 'projects', 'filesystem-path'], '.babelrc', '\\', 'backup')
 		).toEqual({
-			directory: '\\Documents and Settings\\tomprogers\\projects\\filesystem-path',
+			absolute: true,
+			folders: ['Documents and Settings', 'tomprogers', 'projects', 'filesystem-path'],
 			filename: 'backup.babelrc',
 			sep: '\\'
 		})
@@ -62,17 +68,19 @@ describe(`setBasename( directory, filename, sep, newBasename )`, () => {
 
 	it(`adds a basename to paths with no filename`, () => {
 		expect(
-			setBasename('/Users/tomprogers', '', '/', 'new')
+			setBasename(true, ['Users', 'tomprogers'], '', '/', 'new')
 		).toEqual({
-			directory: '/Users/tomprogers',
+			absolute: true,
+			folders: ['Users', 'tomprogers'],
 			filename: 'new',
 			sep: '/'
 		})
 
 		expect(
-			setBasename('\\Documents and Settings\\tomprogers', '', '\\', 'new')
+			setBasename(true, ['Documents and Settings', 'tomprogers'], '', '\\', 'new')
 		).toEqual({
-			directory: '\\Documents and Settings\\tomprogers',
+			absolute: true,
+			folders: ['Documents and Settings', 'tomprogers'],
 			filename: 'new',
 			sep: '\\'
 		})
@@ -81,17 +89,19 @@ describe(`setBasename( directory, filename, sep, newBasename )`, () => {
 
 	it(`removes basenames if newBasename is the empty string`, () => {
 		expect(
-			setBasename('/Users/tomprogers', 'backup.npmrc', '/', '')
+			setBasename(true, ['Users', 'tomprogers'], 'backup.npmrc', '/', '')
 		).toEqual({
-			directory: '/Users/tomprogers',
+			absolute: true,
+			folders: ['Users', 'tomprogers'],
 			filename: '.npmrc',
 			sep: '/'
 		})
 
 		expect(
-			setBasename('\\Documents and Settings\\tomprogers', 'backup.npmrc', '\\', '')
+			setBasename(true, ['Documents and Settings', 'tomprogers'], 'backup.npmrc', '\\', '')
 		).toEqual({
-			directory: '\\Documents and Settings\\tomprogers',
+			absolute: true,
+			folders: ['Documents and Settings', 'tomprogers'],
 			filename: '.npmrc',
 			sep: '\\'
 		})
@@ -100,17 +110,19 @@ describe(`setBasename( directory, filename, sep, newBasename )`, () => {
 
 	it(`renames files with empty directories`, () => {
 		expect(
-			setBasename('', '.tombstone', '/', 'app')
+			setBasename(false, [], '.tombstone', '/', 'app')
 		).toEqual({
-			directory: '',
+			absolute: false,
+			folders: [],
 			filename: 'app.tombstone',
 			sep: '/'
 		})
 
 		expect(
-			setBasename('', '.tombstone', '\\', 'app')
+			setBasename(false, [], '.tombstone', '\\', 'app')
 		).toEqual({
-			directory: '',
+			absolute: false,
+			folders: [],
 			filename: 'app.tombstone',
 			sep: '\\'
 		})
@@ -119,17 +131,19 @@ describe(`setBasename( directory, filename, sep, newBasename )`, () => {
 
 	it(`adds a basename to empty paths`, () => {
 		expect(
-			setBasename('', '', '/', 'first')
+			setBasename(false, [], '', '/', 'first')
 		).toEqual({
-			directory: '',
+			absolute: false,
+			folders: [],
 			filename: 'first',
 			sep: '/'
 		})
 
 		expect(
-			setBasename('', '', '\\', 'first')
+			setBasename(false, [], '', '\\', 'first')
 		).toEqual({
-			directory: '',
+			absolute: false,
+			folders: [],
 			filename: 'first',
 			sep: '\\'
 		})

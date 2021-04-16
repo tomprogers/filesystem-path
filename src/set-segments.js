@@ -2,7 +2,7 @@ const getRoot = require('./get-root')
 const parseDFS = require('./parse-dfs')
 
 
-module.exports = function setSegments( directory, filename, sep, newSegments ) {
+module.exports = function setSegments( absolute, folders, filename, sep, newSegments ) {
 	if( !Array.isArray(newSegments) || newSegments.some(seg => typeof seg !== 'string') )
 		throw new TypeError('newSegments must be an array of strings')
 
@@ -10,7 +10,7 @@ module.exports = function setSegments( directory, filename, sep, newSegments ) {
 	let newSegs = newSegments.slice() // to avoid mutating caller while permitting mutating of working copy
 	let finalNewSegment = newSegs.splice(-1, 1)
 
-	let newDirectory = getRoot(directory, filename, sep)
+	let newDirectory = getRoot(absolute, folders, filename, sep)
 	for( let newSeg of newSegs )
 		newDirectory += newSeg + sep // always add trailing sep to hint parser for pam.d
 

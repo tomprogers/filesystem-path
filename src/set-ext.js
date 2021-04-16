@@ -1,10 +1,11 @@
 const getBasename = require('./get-basename')
+const getDirectory = require('./get-directory')
 const parseDFS = require('./parse-dfs')
 
 
 const dot = '.'
 
-module.exports = function setExt( directory, filename, sep, newExt ) {
+module.exports = function setExt( absolute, folders, filename, sep, newExt ) {
 	if( typeof newExt !== 'string' )
 		throw new TypeError('newExt must be a string')
 
@@ -12,11 +13,11 @@ module.exports = function setExt( directory, filename, sep, newExt ) {
 	// TODO: decide on correct behavior for when newExt is JUST dots, and nail down
 	while( newExt.startsWith(dot) )
 		newExt = newExt.slice(1)
-	if(newExt) newExt = dot + newExt
+	if( newExt ) newExt = dot + newExt
 
 	return parseDFS(
-		directory,
-		getBasename(directory, filename, sep) + newExt,
+		getDirectory(absolute, folders, filename, sep),
+		getBasename(absolute, folders, filename, sep) + newExt,
 		sep
 	)
 }

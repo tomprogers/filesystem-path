@@ -1,21 +1,23 @@
 const setExt = require('./set-ext')
 
 
-describe(`setExt( directory, filename, sep, newExt`, () => {
+describe(`setExt( absolute, folders, filename, sep, newExt`, () => {
 
 	it(`accepts newExt whether or not it has leading dot`, () => {
 		expect(
-			setExt('/path', 'file.ext1', '/', '.ext2')
+			setExt(true, ['path'], 'file.ext1', '/', '.ext2')
 		).toEqual({
-			directory: '/path',
+			absolute: true,
+			folders: ['path'],
 			filename: 'file.ext2',
 			sep: '/'
 		})
 
 		expect(
-			setExt('/path', 'file.ext1', '/', 'ext2')
+			setExt(true, ['path'], 'file.ext1', '/', 'ext2')
 		).toEqual({
-			directory: '/path',
+			absolute: true,
+			folders: ['path'],
 			filename: 'file.ext2',
 			sep: '/'
 		})
@@ -24,17 +26,19 @@ describe(`setExt( directory, filename, sep, newExt`, () => {
 
 	it(`renames files that have both basename and ext`, () => {
 		expect(
-			setExt('/Users/tomprogers/projects/filesystem-path', 'README.md', '/', '.txt')
+			setExt(true, ['Users', 'tomprogers', 'projects', 'filesystem-path'], 'README.md', '/', '.txt')
 		).toEqual({
-			directory: '/Users/tomprogers/projects/filesystem-path',
+			absolute: true,
+			folders: ['Users', 'tomprogers', 'projects', 'filesystem-path'],
 			filename: 'README.txt',
 			sep: '/'
 		})
 
 		expect(
-			setExt('\\Documents and Settings\\tomprogers\\projects\\filesystem-path', 'README.md', '\\', '.txt')
+			setExt(true, ['Documents and Settings','tomprogers','projects','filesystem-path'], 'README.md', '\\', '.txt')
 		).toEqual({
-			directory: '\\Documents and Settings\\tomprogers\\projects\\filesystem-path',
+			absolute: true,
+			folders: ['Documents and Settings','tomprogers','projects','filesystem-path'],
 			filename: 'README.txt',
 			sep: '\\'
 		})
@@ -43,17 +47,19 @@ describe(`setExt( directory, filename, sep, newExt`, () => {
 
 	it(`renames files that only have basename`, () => {
 		expect(
-			setExt('/Users/tomprogers', 'noext', '/', '.new')
+			setExt(true, ['Users', 'tomprogers'], 'noext', '/', '.new')
 		).toEqual({
-			directory: '/Users/tomprogers',
+			absolute: true,
+			folders: ['Users', 'tomprogers'],
 			filename: 'noext.new',
 			sep: '/'
 		})
 
 		expect(
-			setExt('\\Documents and Settings\\tomprogers', 'noext', '\\', '.new')
+			setExt(true, ['Documents and Settings', 'tomprogers'], 'noext', '\\', '.new')
 		).toEqual({
-			directory: '\\Documents and Settings\\tomprogers',
+			absolute: true,
+			folders: ['Documents and Settings', 'tomprogers'],
 			filename: 'noext.new',
 			sep: '\\'
 		})
@@ -62,17 +68,19 @@ describe(`setExt( directory, filename, sep, newExt`, () => {
 
 	it(`renames files that only have ext`, () => {
 		expect(
-			setExt('/Users/tomprogers/projects/filesystem-path', '.babelrc', '/', '.gitignore')
+			setExt(true, ['Users', 'tomprogers', 'projects', 'filesystem-path'], '.babelrc', '/', '.gitignore')
 		).toEqual({
-			directory: '/Users/tomprogers/projects/filesystem-path',
+			absolute: true,
+			folders: ['Users', 'tomprogers', 'projects', 'filesystem-path'],
 			filename: '.gitignore',
 			sep: '/'
 		})
 
 		expect(
-			setExt('\\Documents and Settings\\tomprogers\\projects\\filesystem-path', '.babelrc', '\\', '.gitignore')
+			setExt(true, ['Documents and Settings','tomprogers','projects','filesystem-path'], '.babelrc', '\\', '.gitignore')
 		).toEqual({
-			directory: '\\Documents and Settings\\tomprogers\\projects\\filesystem-path',
+			absolute: true,
+			folders: ['Documents and Settings','tomprogers','projects','filesystem-path'],
 			filename: '.gitignore',
 			sep: '\\'
 		})
@@ -81,17 +89,19 @@ describe(`setExt( directory, filename, sep, newExt`, () => {
 
 	it(`adds an ext to paths with no filename`, () => {
 		expect(
-			setExt('/Users/tomprogers', '', '/', '.new')
+			setExt(true, ['Users', 'tomprogers'], '', '/', '.new')
 		).toEqual({
-			directory: '/Users/tomprogers',
+			absolute: true,
+			folders: ['Users', 'tomprogers'],
 			filename: '.new',
 			sep: '/'
 		})
 
 		expect(
-			setExt('\\Documents and Settings\\tomprogers', '', '\\', '.new')
+			setExt(true, ['Documents and Settings', 'tomprogers'], '', '\\', '.new')
 		).toEqual({
-			directory: '\\Documents and Settings\\tomprogers',
+			absolute: true,
+			folders: ['Documents and Settings', 'tomprogers'],
 			filename: '.new',
 			sep: '\\'
 		})
@@ -100,17 +110,19 @@ describe(`setExt( directory, filename, sep, newExt`, () => {
 
 	it(`removes ext if newExt is the empty string`, () => {
 		expect(
-			setExt('/Users/tomprogers', 'file.backup', '/', '')
+			setExt(true, ['Users', 'tomprogers'], 'file.backup', '/', '')
 		).toEqual({
-			directory: '/Users/tomprogers',
+			absolute: true,
+			folders: ['Users', 'tomprogers'],
 			filename: 'file',
 			sep: '/'
 		})
 
 		expect(
-			setExt('\\Documents and Settings\\tomprogers', 'file.backup', '\\', '')
+			setExt(true, ['Documents and Settings', 'tomprogers'], 'file.backup', '\\', '')
 		).toEqual({
-			directory: '\\Documents and Settings\\tomprogers',
+			absolute: true,
+			folders: ['Documents and Settings', 'tomprogers'],
 			filename: 'file',
 			sep: '\\'
 		})
@@ -119,17 +131,19 @@ describe(`setExt( directory, filename, sep, newExt`, () => {
 
 	it(`renames files with empty directories`, () => {
 		expect(
-			setExt('', '.before', '/', '.after')
+			setExt(false, [], '.before', '/', '.after')
 		).toEqual({
-			directory: '',
+			absolute: false,
+			folders: [],
 			filename: '.after',
 			sep: '/'
 		})
 
 		expect(
-			setExt('', '.before', '\\', '.after')
+			setExt(false, [], '.before', '\\', '.after')
 		).toEqual({
-			directory: '',
+			absolute: false,
+			folders: [],
 			filename: '.after',
 			sep: '\\'
 		})
@@ -138,17 +152,19 @@ describe(`setExt( directory, filename, sep, newExt`, () => {
 
 	it(`adds an ext to empty paths`, () => {
 		expect(
-			setExt('', '', '/', '.first')
+			setExt(false, [], '', '/', '.first')
 		).toEqual({
-			directory: '',
+			absolute: false,
+			folders: [],
 			filename: '.first',
 			sep: '/'
 		})
 
 		expect(
-			setExt('', '', '\\', '.first')
+			setExt(false, [], '', '\\', '.first')
 		).toEqual({
-			directory: '',
+			absolute: false,
+			folders: [],
 			filename: '.first',
 			sep: '\\'
 		})
