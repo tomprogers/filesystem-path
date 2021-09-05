@@ -1,6 +1,6 @@
 {
   "name": "filesystem-path",
-  "version": "0.4.0",
+  "version": "0.4.1",
   "description": "ES6 class that provides a fluent interface over strings representing filesystem paths",
   "author": "Tom Rogers <tom@roguevendor.com>",
   "private": false,
